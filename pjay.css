@@ -133,7 +133,7 @@
   position: absolute;
   z-index: 2; /* Ensure the title is on top */
   top: 102px; /* Adjust as needed */
-  left: 140px; /* Adjust as needed */
+  left: 137px; /* Adjust as needed */
   color: black; /* Ensure the text color is visible */
   font-size: 13px;
   font-family: 'LeagueGothic-Regular';
@@ -189,7 +189,7 @@
   /* font-family: var(--font-league-gothic); */
   font-size: 13px;
   top: 127px; /* Adjust as needed */
-  left: 140px; /* Adjust as needed */
+  left: 137px; /* Adjust as needed */
 }
 
 .details-top1,
@@ -215,7 +215,7 @@
   /* font-family: var(--font-league-gothic); */
   font-size: 13px;
   top: 152px; /* Adjust as needed */
-  left: 140px; /* Adjust as needed */
+  left: 137px; /* Adjust as needed */
 }
 
 .rd {
@@ -238,7 +238,7 @@
   /* font-family: var(--font-league-gothic); */
   font-size: 13px;
   top: 175px; /* Adjust as needed */
-  left: 140px; /* Adjust as needed */
+  left: 137px; /* Adjust as needed */
 }
 
 .details,
