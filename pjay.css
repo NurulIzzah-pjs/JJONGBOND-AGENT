@@ -132,7 +132,7 @@
 .title1 {
   position: absolute;
   z-index: 2; /* Ensure the title is on top */
-  top: 104px; /* Adjust as needed */
+  top: 102px; /* Adjust as needed */
   left: 143px; /* Adjust as needed */
   color: black; /* Ensure the text color is visible */
   font-size: 13px;
@@ -188,7 +188,7 @@
   font-family: 'LeagueGothic-Regular';
   /* font-family: var(--font-league-gothic); */
   font-size: 13px;
-  top: 129px; /* Adjust as needed */
+  top: 127px; /* Adjust as needed */
   left: 143px; /* Adjust as needed */
 }
 
@@ -214,7 +214,7 @@
   font-family: 'LeagueGothic-Regular';
   /* font-family: var(--font-league-gothic); */
   font-size: 13px;
-  top: 154px; /* Adjust as needed */
+  top: 152px; /* Adjust as needed */
   left: 143px; /* Adjust as needed */
 }
 
@@ -237,7 +237,7 @@
   font-family: 'LeagueGothic-Regular';
   /* font-family: var(--font-league-gothic); */
   font-size: 13px;
-  top: 177px; /* Adjust as needed */
+  top: 175px; /* Adjust as needed */
   left: 143px; /* Adjust as needed */
 }
 
