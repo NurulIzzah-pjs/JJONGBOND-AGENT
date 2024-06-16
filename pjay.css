@@ -102,7 +102,7 @@
   display: flex;
   /* flex-direction: row; */
   align-items: flex-start;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
   max-width: 100%;
 }
 .agent-name {
@@ -156,26 +156,30 @@
   position: relative;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25),
     11px 2px 7.1px rgba(0, 0, 0, 0.25);
-  z-index: 2; /* Ensure the code is on top */
+  z-index: 6; /* Ensure the code is on top */
   color: rgb(255, 255, 255); /* Ensure the text color is visible */
+  width: 110px;
 }
 
 .code {
-  width: 26%;
+  width: auto;/* Adjust the width as needed */
+  max-width: 60px;
   margin: 0 !important;
   position: absolute;
-  right: 35px;
-  bottom: 25px;
+  right: 57px;
+  bottom: 28px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  z-index: 2;
+  z-index: 6;
   font-size: 74px;
   color: var(--color-white);
   font-family: 'Praise-Regular';
   /* font-family: var(--font-praise); */
+  white-space: nowrap; 
 }
+
 
 /* DOB styling */
 .dob1 {
