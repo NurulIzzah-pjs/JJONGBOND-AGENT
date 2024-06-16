@@ -120,7 +120,7 @@
   /* font-family: var(--font-allan); */
   position: absolute; /* Ensure the agent is positioned correctly */
   top: 62px; /* Adjust the position as needed */
-  left: 140px; /* Adjust the position as needed */
+  left: 136px; /* Adjust the position as needed */
   z-index: 2; /* Ensure the agent is on top */
 }
 
@@ -165,8 +165,8 @@
 
 .code {
   position: absolute;
-  bottom: 28px;
-  left: 205px; /* Adjust as needed */
+  bottom: 24px;
+  left: 175px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
