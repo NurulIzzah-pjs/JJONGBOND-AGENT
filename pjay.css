@@ -115,7 +115,7 @@
   align-self: stretch;
   padding: 0 px; /* Add padding to prevent text from touching the edges */
   box-sizing: border-box;
-  font-size: 26px;
+  font-size: 23px;
   font-family: 'Allan-Regular';
   /* font-family: var(--font-allan); */
   position: absolute; /* Ensure the agent is positioned correctly */
@@ -165,7 +165,7 @@
 
 .code {
   position: absolute;
-  bottom: 24px;
+  bottom: 18px;
   left: 175px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
