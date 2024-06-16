@@ -90,7 +90,7 @@
 
 .agent-name1 {
   margin: 0;
-  width: 155px;
+  width: 175px;
   position: absolute;
   font-size: inherit;
   font-weight: 700;
@@ -164,13 +164,9 @@
 }
 
 .code {
-  width: auto;/* Adjust the width as needed */
-  max-width: 60px;
-  padding:0px;
-  margin: 0 !important;
   position: absolute;
-  right: 57px;
   bottom: 28px;
+  left: 205px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
