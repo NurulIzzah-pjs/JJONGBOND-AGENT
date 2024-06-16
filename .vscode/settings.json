@@ -1,0 +1,21 @@
+{
+  "detectedConfig": {
+    "typescript": false,
+    "naming": "Kebab Case",
+    "unit": "px",
+    "framework": "html-css",
+    "styling": "CSS"
+  },
+  "locofyConfig": {
+    "project": "Flip-card",
+    "id": "666e89164e61e16de8211d24",
+    "framework": "html-css",
+    "typescript": false,
+    "styling": "CSS",
+    "unit": "px",
+    "naming": "Kebab Case",
+    "path": "public/",
+    "componentsPath": "c:\\Users\\Asus\\Downloads\\html-starter-main\\html-starter-main\\src\\components",
+    "screensPath": "c:\\Users\\Asus\\Downloads\\html-starter-main\\html-starter-main\\src\\pages"
+  }
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/pjay.css">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allan:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Gothic&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Praise&display=swap"> -->
+    
+    <title>Flip Card</title>
+    <style>
+
+
+    </style>
+</head>
+<body>
+  <div class="flip-card-container">
+    <div class="flip-card" id="districtCard">
+      <div class="flip-card-inner">
+        <div class="flip-card-front" id="cardFront">
+            <img src="/MEDIA/front.png" alt="Avatar" style="width:324px;height:204px;">
+        </div>
+        <div class="flip-card-back" id="cardBack">
+          <img src="/MEDIA/back.png" alt="Avatar" style="width:324px;height:204px;">
+          <div class="id-photo" id="id-photo">
+              <input type="file" id="file-input" style="display: none;">
+              <div class="id-photo1" id="id-photo1"></div>
+          </div>
+          <div class="agent">
+            <div class="agent-name">
+              <input type="text" class="agent-name1 editable" value="PARK JONGSEONG">
+            </div>
+          </div>
+          <div class="details-top">
+            <div class="title">
+              <input type="text" class="title1 editable" value="SPECIAL AGENT">
+            </div>
+          </div>
+          <div class="code">
+            <input type="text" class="code1 editable" value="007">
+          </div>
+          <div class="details-top1">
+            <div class="dob">
+              <input type="text" class="dob1 editable" value="20 / 04 / 2002">
+            </div>
+          </div>
+          <div class="rd">
+            <input type="text" class="rd1 editable" value="16 / 06 / 2024">
+          </div>
+          <div class="gender">
+            <input type="text" class="gender1 editable" value="MALE">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button onclick="downloadCard()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
+    Download Card
+  </button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <script>
+    // Function to download card as image
+    function downloadCard() {
+      var node = document.getElementById('districtCard');
+      
+      domtoimage.toBlob(node)
+        .then(function (blob) {
+          window.saveAs(blob, 'card.png');
+        });
+    }
+
+// JavaScript for toggle class on click
+document.addEventListener('DOMContentLoaded', function() {
+    var flipCards = document.querySelectorAll('.flip-card');
+    var fileInput = document.getElementById('file-input');
+    var idPhoto = document.getElementById('id-photo');
+    var idPhoto1 = document.getElementById('id-photo1');
+    var editableInputs = document.querySelectorAll('.editable');
+    
+    flipCards.forEach(function(flipCard) {
+        flipCard.addEventListener('click', function() {
+            flipCard.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        });
+    });
+
+    idPhoto.addEventListener('click', function(event) {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            idPhoto1.style.backgroundImage = 'url(' + e.target.result + ')';
+            idPhoto1.style.backgroundSize = 'cover';
+            idPhoto1.style.backgroundPosition = 'center';
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+
+    editableInputs.forEach(function(input) {
+        input.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+});
+  </script>
+  
+  <script src="/main.js"></script>
+</body>
+</html>
+
+
+
