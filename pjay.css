@@ -8,6 +8,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  position: relative; /* Ensure relative positioning */
 }
 
 /* The flip card container */
@@ -260,7 +261,7 @@
 
 /* Center the button and position it below the card */
 #btnDownload {
-  display: block;
+  display: inline-block;
   padding: 10px 20px;
   background-color: rgb(134, 88, 88); /* Box brown filled */
   color: white; /* Text white */
@@ -270,9 +271,11 @@
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  position: absolute; /* Position it absolutely relative to the container */
-  top: 420px; /* 50px below the flip card */
-  left : 450px
+  position: fixed; /* Position it absolutely */
+  top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
+  left: 50%; /* Position at the horizontal center */
+  transform: translateX(-50%); /* Adjust for half of its own width */
+  z-index: 1000; /* Ensure it appears above other content if needed */
 }
 
 /* Add hover effect */
