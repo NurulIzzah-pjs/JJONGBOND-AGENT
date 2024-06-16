@@ -79,16 +79,18 @@
 }
 
 .editable {
-  border: none;
-  background: none;
-  color: black;
+  border: none; /* Remove default border */
+  outline: none; /* Remove outline on focus */
+  background: none; /* Ensure transparent background */
   font-size: inherit;
   font-weight: inherit;
   font-family: inherit;
   white-space: nowrap;
 }
+
 .agent-name1 {
   margin: 0;
+  width: 155px;
   position: absolute;
   font-size: inherit;
   font-weight: 700;
@@ -111,14 +113,14 @@
 .agent {
   width: 100%;
   align-self: stretch;
-  padding: 0 20px; /* Add padding to prevent text from touching the edges */
+  padding: 0 px; /* Add padding to prevent text from touching the edges */
   box-sizing: border-box;
   font-size: 26px;
   font-family: 'Allan-Regular';
   /* font-family: var(--font-allan); */
   position: absolute; /* Ensure the agent is positioned correctly */
   top: 62px; /* Adjust the position as needed */
-  left: 123px; /* Adjust the position as needed */
+  left: 140px; /* Adjust the position as needed */
   z-index: 2; /* Ensure the agent is on top */
 }
 
@@ -164,6 +166,7 @@
 .code {
   width: auto;/* Adjust the width as needed */
   max-width: 60px;
+  padding:0px;
   margin: 0 !important;
   position: absolute;
   right: 57px;
