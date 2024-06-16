@@ -165,14 +165,14 @@
 
 .code {
   position: absolute;
-  bottom: 18px;
+  bottom: 10px;
   left: 175px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
   z-index: 6;
-  font-size: 74px;
+  font-size: 73px;
   color: var(--color-white);
   font-family: 'Praise-Regular';
   /* font-family: var(--font-praise); */
