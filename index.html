@@ -5,159 +5,187 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/pjay.css">
-
     <title>Flip Card</title>
     <style>
-      /* Ensure images are visible in Safari */
-      .flip-card-front img, .flip-card-back img {
-        display: block;
-      }
+        /* Ensure images are visible in Safari */
+        .flip-card-front img, .flip-card-back img {
+            display: block;
+        }
     </style>
 </head>
 <body>
-  <div class="flip-card-container">
-    <div class="flip-card" id="districtCard">
-      <div class="flip-card-inner">
-        <div class="flip-card-front" id="cardFront">
-            <img src="/MEDIA/front.png" alt="Avatar" style="width:324px;height:204px;">
+    <div class="flip-card-container">
+        <div class="flip-card" id="districtCard">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" id="cardFront">
+                    <img src="/MEDIA/front.png" alt="Avatar" style="width:324px;height:204px;">
+                </div>
+                <div class="flip-card-back" id="cardBack">
+                    <img src="/MEDIA/back.png" alt="Avatar" style="width:324px;height:204px;">
+                    <div class="id-photo" id="id-photo">
+                        <input type="file" id="file-input" style="display: none;">
+                        <div class="id-photo1" id="id-photo1"></div>
+                    </div>
+                    <div class="agent">
+                        <div class="agent-name">
+                            <input type="text" class="agent-name1 editable" value="PARK JONGSEONG">
+                        </div>
+                    </div>
+                    <div class="details-top">
+                        <div class="title">
+                            <input type="text" class="title1 editable" value="SPECIAL AGENT">
+                        </div>
+                    </div>
+                    <div class="code">
+                        <input type="text" class="code1 editable" value="007">
+                    </div>
+                    <div class="details-top1">
+                        <div class="dob">
+                            <input type="text" class="dob1 editable" value="20 / 04 / 2002">
+                        </div>
+                    </div>
+                    <div class="rd">
+                        <input type="text" class="rd1 editable" value="16 / 06 / 2024">
+                    </div>
+                    <div class="gender">
+                        <input type="text" class="gender1 editable" value="MALE">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="flip-card-back" id="cardBack">
-          <img src="/MEDIA/back.png" alt="Avatar" style="width:324px;height:204px;">
-          <div class="id-photo" id="id-photo">
-              <input type="file" id="file-input" style="display: none;">
-              <div class="id-photo1" id="id-photo1"></div>
-          </div>
-          <div class="agent">
-            <div class="agent-name">
-              <input type="text" class="agent-name1 editable" value="PARK JONGSEONG">
-            </div>
-          </div>
-          <div class="details-top">
-            <div class="title">
-              <input type="text" class="title1 editable" value="SPECIAL AGENT">
-            </div>
-          </div>
-          <div class="code">
-            <input type="text" class="code1 editable" value="007">
-          </div>
-          <div class="details-top1">
-            <div class="dob">
-              <input type="text" class="dob1 editable" value="20 / 04 / 2002">
-            </div>
-          </div>
-          <div class="rd">
-            <input type="text" class="rd1 editable" value="16 / 06 / 2024">
-          </div>
-          <div class="gender">
-            <input type="text" class="gender1 editable" value="MALE">
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <button onclick="editConfirm()" id="btnEditConfirm" class="btn btn--primary" data-splitbee-event="Edit Confirm">
-    Edit Confirm
-  </button>
-  <button onclick="loadImagesBeforeDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card" style="display: none;">
-    Download Card
-  </button>
+    <button onclick="loadImagesBeforeDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
+        Download Card
+    </button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+        var isFlipped = false; // Track if the card is flipped
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script>
-    
-   // Function to ensure images are fully loaded
-   function loadImage(url) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve();
-        img.onerror = () => reject();
-        img.src = url;
-      });
+        function loadImagesBeforeDownload() {
+            var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
+            var promises = [];
+
+            images.forEach(function(img) {
+                promises.push(loadImage(img.src));
+            });
+
+            // Explicitly load front.png
+            promises.push(loadImage('/MEDIA/front.png'));
+
+            Promise.all(promises).then(function() {
+                downloadCard();
+            }).catch(function(error) {
+                console.error('Error loading images:', error);
+            });
+        }
+
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve();
+                img.onerror = () => reject();
+                img.src = url;
+            });
+        }
+
+        // Function to download the card
+        function downloadCard() {
+    var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
+
+    // Get dimensions of the visible card area
+    var rect = cardSide.getBoundingClientRect();
+    var width = rect.width;
+    var height = rect.height;
+
+    var scale = 2; // Example: Increase resolution by 2x
+    var scaledWidth = width * scale;
+    var scaledHeight = height * scale;
+
+    var options = {
+        width: scaledWidth,
+        height: scaledHeight,
+        style: {
+            transform: 'scale(' + scale + ')', // Scale up for higher resolution
+            transformOrigin: 'top left' // Set transform origin to top left corner
+        },
+        filter: function(node) {
+            return (node.className !== 'editable'); // Exclude editable inputs from the image
+        }
+    };
+
+    // Set transform for back side if flipped
+    if (isFlipped) {
+        cardSide.style.transform = 'rotateY(180deg)';
     }
 
-   // Function to ensure images are fully loaded before download
-   function loadImagesBeforeDownload() {
-      var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
-      var promises = [];
+    // Calculate offset to center the image after scaling
+    var offsetX = (scaledWidth - width) / 2;
+    var offsetY = (scaledHeight - height) / 2;
+    cardSide.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)'; // Apply translation to center the image
 
-      images.forEach(function(img) {
-        promises.push(loadImage(img.src));
-      });
+    // Generate image
+    domtoimage.toPng(cardSide, options).then(function(blob) {
+        window.saveAs(blob, 'JJONGBOND-AGENT.png');
 
-      Promise.all(promises).then(function() {
-        downloadCard();
-      }).catch(function(error) {
-        console.error('Error loading images:', error);
-      });
-    }
-
-    // Function to capture the card as an image upon edit confirmation
-    function editConfirm() {
-      var flipCard = document.getElementById('districtCard');
-      
-      domtoimage.toBlob(flipCard).then(function(blob) {
-        window.cardImageBlob = blob; // Store the image blob in a global variable
-        document.getElementById('btnDownload').style.display = 'inline-block'; // Show download button
-        document.getElementById('btnEditConfirm').style.display = 'none'; // Hide edit confirm button
-      }).catch(function(error) {
-        console.error('Error generating image:', error);
-      });
-    }
-
-    // Function to download the card
-    function downloadCard() {
-      if (window.cardImageBlob) {
-        window.saveAs(window.cardImageBlob, 'flipcard.png');
-      } else {
-        console.error('No card image available.');
-      }
-    }
-
-    // JavaScript for toggle class on click
-    document.addEventListener('DOMContentLoaded', function() {
-        var flipCards = document.querySelectorAll('.flip-card');
-        var fileInput = document.getElementById('file-input');
-        var idPhoto = document.getElementById('id-photo');
-        var idPhoto1 = document.getElementById('id-photo1');
-        var editableInputs = document.querySelectorAll('.editable');
+        // Reset styles after downloading
+        cardSide.style.transform = ''; // Reset transform
         
-        flipCards.forEach(function(flipCard) {
-            flipCard.addEventListener('click', function() {
-                flipCard.classList.toggle('flipped');
-                isFlipped = !isFlipped;
-            });
-        });
-
-        idPhoto.addEventListener('click', function(event) {
-            fileInput.click();
-        });
-
-        fileInput.addEventListener('change', function(event) {
-            var file = event.target.files[0];
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                idPhoto1.style.backgroundImage = 'url(' + e.target.result + ')';
-                idPhoto1.style.backgroundSize = 'cover';
-                idPhoto1.style.backgroundPosition = 'center';
-            };
-
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        });
-
-        editableInputs.forEach(function(input) {
-            input.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-        });
+    }).catch(function(error) {
+        console.error('Error generating image:', error);
     });
-  </script>
+}
+
+
+
+        // JavaScript for toggle class on click
+        document.addEventListener('DOMContentLoaded', function() {
+            var flipCards = document.querySelectorAll('.flip-card');
+            var fileInput = document.getElementById('file-input');
+            var idPhoto = document.getElementById('id-photo');
+            var idPhoto1 = document.getElementById('id-photo1');
+            var editableInputs = document.querySelectorAll('.editable');
+
+            flipCards.forEach(function(flipCard) {
+                flipCard.addEventListener('click', function() {
+                    flipCard.classList.toggle('flipped');
+                    isFlipped = !isFlipped;
+                });
+            });
+
+            idPhoto.addEventListener('click', function(event) {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function(event) {
+                var file = event.target.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    idPhoto1.style.backgroundImage = 'url(' + e.target.result + ')';
+                    idPhoto1.style.backgroundSize = 'cover';
+                    idPhoto1.style.backgroundPosition = 'center';
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            editableInputs.forEach(function(input) {
+                input.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            });
+
+            var btnDownload = document.getElementById('btnDownload');
+            btnDownload.addEventListener('click', function() {
+                loadImagesBeforeDownload();
+            });
+        });
+    </script>
 </body>
 </html>
-
 
 
 
