@@ -55,7 +55,10 @@
       </div>
     </div>
   </div>
-  <button onclick="loadImagesBeforeDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
+  <button onclick="editConfirm()" id="btnEditConfirm" class="btn btn--primary" data-splitbee-event="Edit Confirm">
+    Edit Confirm
+  </button>
+  <button onclick="loadImagesBeforeDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card" style="display: none;">
     Download Card
   </button>
 
@@ -89,15 +92,26 @@
       });
     }
 
-    // Function to download the card
-    function downloadCard() {
+    // Function to capture the card as an image upon edit confirmation
+    function editConfirm() {
       var flipCard = document.getElementById('districtCard');
       
       domtoimage.toBlob(flipCard).then(function(blob) {
-        window.saveAs(blob, 'flipcard.png');
+        window.cardImageBlob = blob; // Store the image blob in a global variable
+        document.getElementById('btnDownload').style.display = 'inline-block'; // Show download button
+        document.getElementById('btnEditConfirm').style.display = 'none'; // Hide edit confirm button
       }).catch(function(error) {
         console.error('Error generating image:', error);
       });
+    }
+
+    // Function to download the card
+    function downloadCard() {
+      if (window.cardImageBlob) {
+        window.saveAs(window.cardImageBlob, 'flipcard.png');
+      } else {
+        console.error('No card image available.');
+      }
     }
 
     // JavaScript for toggle class on click
@@ -143,6 +157,7 @@
   </script>
 </body>
 </html>
+
 
 
 
