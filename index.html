@@ -5,7 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/pjay.css">
+
     <title>Flip Card</title>
+    <style>
+      /* Ensure images are visible in Safari */
+      .flip-card-front img, .flip-card-back img {
+        display: block;
+      }
+    </style>
 </head>
 <body>
   <div class="flip-card-container">
@@ -48,13 +55,14 @@
       </div>
     </div>
   </div>
-  <button onclick="downloadCard()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
+  <button onclick="loadImagesBeforeDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
     Download Card
   </button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script>
+    
    // Function to ensure images are fully loaded
    function loadImage(url) {
       return new Promise((resolve, reject) => {
@@ -65,6 +73,33 @@
       });
     }
 
+   // Function to ensure images are fully loaded before download
+   function loadImagesBeforeDownload() {
+      var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
+      var promises = [];
+
+      images.forEach(function(img) {
+        promises.push(loadImage(img.src));
+      });
+
+      Promise.all(promises).then(function() {
+        downloadCard();
+      }).catch(function(error) {
+        console.error('Error loading images:', error);
+      });
+    }
+
+    // Function to download the card
+    function downloadCard() {
+      var flipCard = document.getElementById('districtCard');
+      
+      domtoimage.toBlob(flipCard).then(function(blob) {
+        window.saveAs(blob, 'flipcard.png');
+      }).catch(function(error) {
+        console.error('Error generating image:', error);
+      });
+    }
+
     // JavaScript for toggle class on click
     document.addEventListener('DOMContentLoaded', function() {
         var flipCards = document.querySelectorAll('.flip-card');
@@ -72,7 +107,7 @@
         var idPhoto = document.getElementById('id-photo');
         var idPhoto1 = document.getElementById('id-photo1');
         var editableInputs = document.querySelectorAll('.editable');
-
+        
         flipCards.forEach(function(flipCard) {
             flipCard.addEventListener('click', function() {
                 flipCard.classList.toggle('flipped');
@@ -105,53 +140,6 @@
             });
         });
     });
-
-    let isFlipped = false;
-
-    /*-- Download Card ------*/
-    function downloadCard() {
-        var card = document.getElementById('districtCard');
-        var scale = 2; // Scaling factor for higher resolution
-
-        // Temporarily disable transitions for accurate rendering
-        card.style.transition = 'none';
-
-        // Ensure both sides are visible
-        var cardFront = document.getElementById('cardFront');
-        var cardBack = document.getElementById('cardBack');
-        cardFront.style.visibility = 'visible';
-        cardBack.style.visibility = 'visible';
-
-        // Delay to ensure DOM updates are applied before rendering
-        setTimeout(() => {
-            // Convert card to base64 data URL
-            domtoimage.toPng(card, {
-                width: card.offsetWidth * scale,
-                height: card.offsetHeight * scale,
-                style: {
-                    transform: 'scale(' + scale + ')',
-                    transformOrigin: 'top left',
-                    width: card.offsetWidth + 'px',
-                    height: card.offsetHeight + 'px'
-                }
-            }).then((dataUrl) => {
-                // Create a temporary anchor element
-                var link = document.createElement('a');
-                link.href = dataUrl;
-                link.download = 'JJONG-BOND.png';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }).catch(function(error) {
-                console.error('Failed to download image:', error);
-            }).finally(() => {
-                // Re-enable transitions and reset visibility
-                card.style.transition = '';
-                cardFront.style.visibility = '';
-                cardBack.style.visibility = '';
-            });
-        }, 100);
-    }
   </script>
 </body>
 </html>
