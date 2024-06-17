@@ -283,7 +283,7 @@
   top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
   left: 50%; /* Position at the horizontal center */
   transform: translateX(-50%); /* Adjust for half of its own width */
-  z-index: 1000; /* Ensure it appears above other content if needed */
+  z-index: 1; /* Ensure it appears above other content if needed */
 }
 
 /* Add hover effect */
