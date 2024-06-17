@@ -4,7 +4,7 @@ let isFlipped = false;
 
 function downloadCard() {
     var card = document.getElementById('districtCard');
-    // var scale = 2; // Scaling factor for higher resolution
+    var scale = 2; // Scaling factor for higher resolution
 
     // Temporarily disable transitions for accurate rendering
     card.style.transition = 'none';
