@@ -173,7 +173,7 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  z-index: 6;
+  z-index: 1;
   font-size: 73px;
   color: var(--color-white);
   font-family: 'Praise-Regular';
