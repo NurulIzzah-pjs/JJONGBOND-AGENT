@@ -44,6 +44,7 @@ function downloadCard() {
             cardBack.style.visibility = '';
         });
     }, 100);
+    link.click();
 }
 
 
