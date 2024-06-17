@@ -61,7 +61,7 @@
 /* Ensure the ID photo is above the back image */
 .id-photo {
   width: 96.5px; /* Set a width */
-  height: 118.5px; /* Set a height */
+  height: 118.2px; /* Set a height */
   background-color: #000000; /* Background for visibility */
   position: absolute; /* Position it absolutely relative to .flip-card-back */
   top: 68px; /* Adjust as needed */
