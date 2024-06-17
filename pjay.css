@@ -3,12 +3,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Full viewport height */
-  background-color: transparent; /* Optional: to distinguish the container background */
+  height: 100vh;
+  background-color: transparent;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  position: relative; /* Ensure relative positioning */
+  position: relative;
 }
 
 /* The flip card container */
@@ -329,3 +329,4 @@
 	font-family: 'Praise-Regular';
 	src: url('/fonts/Praise-Regular.ttf');
 }
+
