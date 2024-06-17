@@ -5,17 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/pjay.css">
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allan:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Gothic&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Praise&display=swap"> -->
-    
+
     <title>Flip Card</title>
-    <style>
-
-
-    </style>
 </head>
 <body>
   <div class="flip-card-container">
@@ -62,16 +53,30 @@
     Download Card
   </button>
 
+ 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script>
     // Function to download card as image
     function downloadCard() {
       var node = document.getElementById('districtCard');
+      var scale = 2; // Scaling factor to improve image quality
+
       
-      domtoimage.toBlob(node)
-        .then(function (blob) {
-          window.saveAs(blob, 'card.png');
-        });
+      domtoimage.toBlob(node, {
+        width: node.offsetWidth * scale,
+        height: node.offsetHeight * scale,
+        style: {
+          transform: 'scale(' + scale + ')',
+          transformOrigin: 'top left',
+          width: node.offsetWidth + 'px',
+          height: node.offsetHeight + 'px'
+        }
+      }).then(function (blob) {
+        window.saveAs(blob, 'card.png');
+      }).catch(function (error) {
+        console.error('Failed to download image:', error);
+      });
     }
 
 // JavaScript for toggle class on click
@@ -119,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="/main.js"></script>
 </body>
 </html>
+
 
 
 
