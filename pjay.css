@@ -120,7 +120,7 @@
   /* font-family: var(--font-allan); */
   position: absolute; /* Ensure the agent is positioned correctly */
   top: 62px; /* Adjust the position as needed */
-  left: 136px; /* Adjust the position as needed */
+  left: 123px; /* Adjust the position as needed */
   z-index: 2; /* Ensure the agent is on top */
 }
 
