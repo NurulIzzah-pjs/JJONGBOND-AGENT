@@ -59,7 +59,9 @@
   <script>
     
      // Function to ensure images are fully loaded
-    function loadImage(url) {
+    // Function to ensure images are fully loaded
+      // Function to ensure images are fully loaded
+      function loadImage(url) {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve();
@@ -78,6 +80,14 @@
         var node = document.getElementById('districtCard');
         var scale = 2; // Scaling factor to improve image quality
 
+        // Temporarily disable transitions and ensure both sides are visible
+        var flipCardInner = document.querySelector('.flip-card-inner');
+        flipCardInner.style.transition = 'none';
+        var cardFront = document.getElementById('cardFront');
+        var cardBack = document.getElementById('cardBack');
+        cardFront.style.visibility = 'visible';
+        cardBack.style.visibility = 'visible';
+
         domtoimage.toBlob(node, {
           width: node.offsetWidth * scale,
           height: node.offsetHeight * scale,
@@ -89,6 +99,14 @@
           }
         }).then(function(blob) {
           window.saveAs(blob, 'card.png');
+
+          // Revert visibility and transition
+          if (isFlipped) {
+            cardFront.style.visibility = 'hidden';
+          } else {
+            cardBack.style.visibility = 'hidden';
+          }
+          flipCardInner.style.transition = '';
         }).catch(function(error) {
           console.error('Failed to download image:', error);
         });
