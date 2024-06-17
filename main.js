@@ -3,150 +3,53 @@ let isFlipped = false;
 /*-- Download Card ------*/
 
 function downloadCard() {
-    let card = document.getElementById('districtCard');
-    // let cardFront = document.getElementById('cardFront');
-    // let cardBack = document.getElementById('cardBack');
-    
-
-    let scale = 2;
+    var card = document.getElementById('districtCard');
+    var scale = 2; // Scaling factor for higher resolution
 
     // Temporarily disable transitions for accurate rendering
     card.style.transition = 'none';
 
-    if (isFlipped) {
-        document.getElementById('cardFront').style.visibility = 'hidden';
-        document.getElementById('cardBack').style.visibility = 'visible';
-    } else {
-        document.getElementById('cardBack').style.visibility = 'hidden';
-        document.getElementById('cardFront').style.visibility = 'visible';
-    }
+    // Ensure both sides are visible
+    var cardFront = document.getElementById('cardFront');
+    var cardBack = document.getElementById('cardBack');
+    cardFront.style.visibility = 'visible';
+    cardBack.style.visibility = 'visible';
 
     // Delay to ensure DOM updates are applied before rendering
-    setTimeout(() => {let isFlipped = false;
-
-        // Function to ensure images are fully loaded
-        function loadImage(url) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = () => resolve();
-                img.onerror = () => reject();
-                img.src = url;
-            });
-        }
-        
-        // Function to download card as image
-        function downloadCard() {
-            // Ensure both images are fully loaded
-            Promise.all([
-                loadImage('/MEDIA/front.png'),
-                loadImage('/MEDIA/back.png')
-            ]).then(() => {
-                var card = document.getElementById('districtCard');
-                var scale = 2; // Scaling factor to improve image quality
-        
-                // Temporarily disable transitions for accurate rendering
-                card.style.transition = 'none';
-        
-                if (isFlipped) {
-                    document.getElementById('cardFront').style.visibility = 'hidden';
-                    document.getElementById('cardBack').style.visibility = 'visible';
-                } else {
-                    document.getElementById('cardBack').style.visibility = 'hidden';
-                    document.getElementById('cardFront').style.visibility = 'visible';
-                }
-        
-                // Delay to ensure DOM updates are applied before rendering
-                setTimeout(() => {
-                    domtoimage.toBlob(card, {
-                        width: card.offsetWidth * scale,
-                        height: card.offsetHeight * scale,
-                        style: {
-                            transform: 'scale(' + scale + ')',
-                            transformOrigin: 'top left',
-                            width: card.offsetWidth + 'px',
-                            height: card.offsetHeight + 'px'
-                        }
-                    }).then(function(blob) {
-                        window.saveAs(blob, 'card.png');
-        
-                        // Revert visibility and transition
-                        document.getElementById('cardFront').style.visibility = '';
-                        document.getElementById('cardBack').style.visibility = '';
-                        card.style.transition = '';
-                    }).catch(function(error) {
-                        console.error('Failed to download image:', error);
-                    });
-                }, 100);
-            }).catch(error => {
-                console.error('Failed to load images:', error);
-            });
-        }
-        
-        // JavaScript for toggle class on click
-        document.addEventListener('DOMContentLoaded', function() {
-            var flipCards = document.querySelectorAll('.flip-card');
-            var fileInput = document.getElementById('file-input');
-            var idPhoto = document.getElementById('id-photo');
-            var idPhoto1 = document.getElementById('id-photo1');
-            var editableInputs = document.querySelectorAll('.editable');
-        
-            flipCards.forEach(function(flipCard) {
-                flipCard.addEventListener('click', function() {
-                    flipCard.classList.toggle('flipped');
-                    isFlipped = !isFlipped;
-                });
-            });
-        
-            idPhoto.addEventListener('click', function(event) {
-                fileInput.click();
-            });
-        
-            fileInput.addEventListener('change', function(event) {
-                var file = event.target.files[0];
-                var reader = new FileReader();
-        
-                reader.onload = function(e) {
-                    idPhoto1.style.backgroundImage = 'url(' + e.target.result + ')';
-                    idPhoto1.style.backgroundSize = 'cover';
-                    idPhoto1.style.backgroundPosition = 'center';
-                };
-        
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
-            });
-        
-            editableInputs.forEach(function(input) {
-                input.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                });
-            });
-        });
-        
+    setTimeout(() => {
+        // Convert card to base64 data URL
         domtoimage.toPng(card, {
-            width: card.clientWidth * scale,
-            height: card.clientHeight * scale,
+            width: card.offsetWidth * scale,
+            height: card.offsetHeight * scale,
             style: {
                 transform: 'scale(' + scale + ')',
                 transformOrigin: 'top left',
-            },
+                width: card.offsetWidth + 'px',
+                height: card.offsetHeight + 'px'
+            }
         }).then((dataUrl) => {
-            downloadURI(dataUrl, 'JJONG-BOND-AGENT.png');
-            document.getElementById('cardFront').style.visibility = '';
-            document.getElementById('cardBack').style.visibility = '';
+            // Create a temporary link element
+            var link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = 'card.png';
+
+            // Simulate a click on the link to trigger download
+            link.click();
+
+            // Clean up
+            setTimeout(() => {
+                URL.revokeObjectURL(dataUrl);
+                document.body.removeChild(link);
+            }, 100);
+        }).catch(function(error) {
+            console.error('Failed to download image:', error);
+        }).finally(() => {
+            // Re-enable transitions and reset visibility
             card.style.transition = '';
+            cardFront.style.visibility = '';
+            cardBack.style.visibility = '';
         });
     }, 100);
-}
-
-function downloadURI(uri, name) {
-    var link = document.createElement('a');
-    link.download = name;
-    link.href = uri;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    delete link;
 }
 
 
