@@ -4,7 +4,7 @@ let isFlipped = false;
 
 function downloadCard() {
     var card = document.getElementById('districtCard');
-    var scale = 2; // Scaling factor for higher resolution
+    // var scale = 2; // Scaling factor for higher resolution
 
     // Temporarily disable transitions for accurate rendering
     card.style.transition = 'none';
@@ -31,7 +31,7 @@ function downloadCard() {
             // Create a temporary link element
             var link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'card.png';
+            link.download = 'JJONGBOND-AGENT.png';
 
             // Simulate a click on the link to trigger download
             link.click();
