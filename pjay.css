@@ -168,7 +168,7 @@
 .code {
   position: absolute;
   bottom: 30px;
-  left: 172px; /* Adjust as needed */
+  left: 165px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -192,7 +192,7 @@
   font-size: 13px;
   top: 127px; /* Adjust as needed */
   left: 137px; /* Adjust as needed */
-  max-width: 55px;
+  max-width: 45px;
 }
 
 .details-top1,
@@ -219,7 +219,7 @@
   font-size: 13px;
   top: 152px; /* Adjust as needed */
   left: 137px; /* Adjust as needed */
-  max-width: 55px;
+  max-width: 45px;
 }
 
 .rd {
