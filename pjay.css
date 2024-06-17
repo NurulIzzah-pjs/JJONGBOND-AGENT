@@ -111,9 +111,9 @@
   flex: 1;
 }
 .agent {
-  width: 100%;
+  width: auto; /* Allow the width to adjust dynamically */
   align-self: stretch;
-  padding: 0 px; /* Add padding to prevent text from touching the edges */
+  padding: 0 10px; /* Add padding to prevent text from touching the edges */
   box-sizing: border-box;
   font-size: 23px;
   font-family: 'Allan-Regular';
@@ -161,11 +161,12 @@
   z-index: 6; /* Ensure the code is on top */
   color: rgb(255, 255, 255); /* Ensure the text color is visible */
   width: 110px;
+  height: 50px; /* Adjust the height as needed */
 }
 
 .code {
   position: absolute;
-  bottom: 10px;
+  bottom: 30px;
   left: 175px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
@@ -329,4 +330,5 @@
 	font-family: 'Praise-Regular';
 	src: url('/fonts/Praise-Regular.ttf');
 }
+
 
