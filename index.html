@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/pjay.css">
-
     <title>Flip Card</title>
 </head>
 <body>
@@ -49,117 +48,114 @@
       </div>
     </div>
   </div>
-  <a id="btnDownload" class="btn btn--primary" href="#" onclick="downloadCard(); return false;" data-splitbee-event="Download Card">
+  <button onclick="downloadCard()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
     Download Card
-  </a>
- 
+  </button>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script>
-    
-  // // Function to ensure images are fully loaded
-  //   function loadImage(url) {
-  //     return new Promise((resolve, reject) => {
-  //       const img = new Image();
-  //       img.onload = () => resolve();
-  //       img.onerror = () => reject();
-  //       img.src = url;
-  //     });
-  //   }
+   // Function to ensure images are fully loaded
+   function loadImage(url) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => reject();
+        img.src = url;
+      });
+    }
 
-  //   // Function to download card as image
-  //   function downloadCard() {
-  //     // Ensure both images are fully loaded
-  //     Promise.all([
-  //       loadImage('/MEDIA/front.png'),
-  //       loadImage('/MEDIA/back.png')
-  //     ]).then(() => {
-  //       var node = document.getElementById('districtCard');
-  //       var scale = 2; // Scaling factor to improve image quality
+    // JavaScript for toggle class on click
+    document.addEventListener('DOMContentLoaded', function() {
+        var flipCards = document.querySelectorAll('.flip-card');
+        var fileInput = document.getElementById('file-input');
+        var idPhoto = document.getElementById('id-photo');
+        var idPhoto1 = document.getElementById('id-photo1');
+        var editableInputs = document.querySelectorAll('.editable');
 
-  //       // Temporarily disable transitions and ensure both sides are visible
-  //       var flipCardInner = document.querySelector('.flip-card-inner');
-  //       flipCardInner.style.transition = 'none';
-  //       var cardFront = document.getElementById('cardFront');
-  //       var cardBack = document.getElementById('cardBack');
-  //       cardFront.style.visibility = 'visible';
-  //       cardBack.style.visibility = 'visible';
+        flipCards.forEach(function(flipCard) {
+            flipCard.addEventListener('click', function() {
+                flipCard.classList.toggle('flipped');
+                isFlipped = !isFlipped;
+            });
+        });
 
-  //       // Delay to ensure DOM updates are applied before rendering
-  //       setTimeout(() => {
-  //         domtoimage.toBlob(node, {
-  //           width: node.offsetWidth * scale,
-  //           height: node.offsetHeight * scale,
-  //           style: {
-  //             transform: 'scale(' + scale + ')',
-  //             transformOrigin: 'top left',
-  //             width: node.offsetWidth + 'px',
-  //             height: node.offsetHeight + 'px'
-  //           }
-  //         }).then(function(blob) {
-  //           window.saveAs(blob, 'card.png');
+        idPhoto.addEventListener('click', function(event) {
+            fileInput.click();
+        });
 
-  //           // Revert visibility and transition
-  //           if (isFlipped) {
-  //             cardFront.style.visibility = 'hidden';
-  //           } else {
-  //             cardBack.style.visibility = 'hidden';
-  //           }
-  //           flipCardInner.style.transition = '';
-  //         }).catch(function(error) {
-  //           console.error('Failed to download image:', error);
-  //         });
-  //       }, 100);
-  //     }).catch(error => {
-  //       console.error('Failed to load images:', error);
-  //     });
-  //   }
-    
-// JavaScript for toggle class on click
-document.addEventListener('DOMContentLoaded', function() {
-    var flipCards = document.querySelectorAll('.flip-card');
-    var fileInput = document.getElementById('file-input');
-    var idPhoto = document.getElementById('id-photo');
-    var idPhoto1 = document.getElementById('id-photo1');
-    var editableInputs = document.querySelectorAll('.editable');
-    
-    flipCards.forEach(function(flipCard) {
-        flipCard.addEventListener('click', function() {
-            flipCard.classList.toggle('flipped');
-            isFlipped = !isFlipped;
+        fileInput.addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                idPhoto1.style.backgroundImage = 'url(' + e.target.result + ')';
+                idPhoto1.style.backgroundSize = 'cover';
+                idPhoto1.style.backgroundPosition = 'center';
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+        editableInputs.forEach(function(input) {
+            input.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
         });
     });
 
-    idPhoto.addEventListener('click', function(event) {
-        fileInput.click();
-    });
+    let isFlipped = false;
 
-    fileInput.addEventListener('change', function(event) {
-        var file = event.target.files[0];
-        var reader = new FileReader();
+    /*-- Download Card ------*/
+    function downloadCard() {
+        var card = document.getElementById('districtCard');
+        var scale = 2; // Scaling factor for higher resolution
 
-        reader.onload = function(e) {
-            idPhoto1.style.backgroundImage = 'url(' + e.target.result + ')';
-            idPhoto1.style.backgroundSize = 'cover';
-            idPhoto1.style.backgroundPosition = 'center';
-        };
+        // Temporarily disable transitions for accurate rendering
+        card.style.transition = 'none';
 
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    });
+        // Ensure both sides are visible
+        var cardFront = document.getElementById('cardFront');
+        var cardBack = document.getElementById('cardBack');
+        cardFront.style.visibility = 'visible';
+        cardBack.style.visibility = 'visible';
 
-    editableInputs.forEach(function(input) {
-        input.addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
-    });
-});
+        // Delay to ensure DOM updates are applied before rendering
+        setTimeout(() => {
+            // Convert card to base64 data URL
+            domtoimage.toPng(card, {
+                width: card.offsetWidth * scale,
+                height: card.offsetHeight * scale,
+                style: {
+                    transform: 'scale(' + scale + ')',
+                    transformOrigin: 'top left',
+                    width: card.offsetWidth + 'px',
+                    height: card.offsetHeight + 'px'
+                }
+            }).then((dataUrl) => {
+                // Create a temporary anchor element
+                var link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = 'JJONG-BOND.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(function(error) {
+                console.error('Failed to download image:', error);
+            }).finally(() => {
+                // Re-enable transitions and reset visibility
+                card.style.transition = '';
+                cardFront.style.visibility = '';
+                cardBack.style.visibility = '';
+            });
+        }, 100);
+    }
   </script>
-  
-  <script src="/main.js"></script>
 </body>
 </html>
+
 
 
 
