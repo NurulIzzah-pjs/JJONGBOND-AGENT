@@ -4,8 +4,9 @@ let isFlipped = false;
 
 function downloadCard() {
     let card = document.getElementById('districtCard');
-    let cardFront = document.getElementById('cardFront');
-    let cardBack = document.getElementById('cardBack');
+    // let cardFront = document.getElementById('cardFront');
+    // let cardBack = document.getElementById('cardBack');
+    
 
     let scale = 2;
 
@@ -13,13 +14,11 @@ function downloadCard() {
     card.style.transition = 'none';
 
     if (isFlipped) {
-        // Show the back side
-        cardFront.style.visibility = 'hidden';
-        cardBack.style.visibility = 'visible';
+        document.getElementById('cardFront').style.visibility = 'hidden';
+        document.getElementById('cardBack').style.visibility = 'visible';
     } else {
-        // Show the front side
-        cardBack.style.visibility = 'hidden';
-        cardFront.style.visibility = 'visible';
+        document.getElementById('cardBack').style.visibility = 'hidden';
+        document.getElementById('cardFront').style.visibility = 'visible';
     }
 
     // Delay to ensure DOM updates are applied before rendering
@@ -32,18 +31,12 @@ function downloadCard() {
                 transformOrigin: 'top left',
             },
         }).then((dataUrl) => {
-            var img = new Image();
-            img.src = dataUrl;
             downloadURI(dataUrl, 'JJONG-BOND-AGENT.png');
-
-            // Revert visibility changes
-            cardFront.style.visibility = '';
-            cardBack.style.visibility = '';
-            
-            // Re-enable transitions after rendering
+            document.getElementById('cardFront').style.visibility = '';
+            document.getElementById('cardBack').style.visibility = '';
             card.style.transition = '';
         });
-    }, 100); // Adjust delay as needed
+    }, 100);
 }
 
 function downloadURI(uri, name) {
@@ -55,5 +48,6 @@ function downloadURI(uri, name) {
     document.body.removeChild(link);
     delete link;
 }
+
 
 
