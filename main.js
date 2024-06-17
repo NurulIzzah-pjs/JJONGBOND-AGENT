@@ -28,19 +28,13 @@ function downloadCard() {
                 height: card.offsetHeight + 'px'
             }
         }).then((dataUrl) => {
-            // Create a temporary link element
+            // Create a temporary anchor element
             var link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'JJONGBOND-AGENT.png';
-
-            // Simulate a click on the link to trigger download
+            link.download = 'JJONG-BOND.png';
+            document.body.appendChild(link);
             link.click();
-
-            // Clean up
-            setTimeout(() => {
-                URL.revokeObjectURL(dataUrl);
-                document.body.removeChild(link);
-            }, 100);
+            document.body.removeChild(link);
         }).catch(function(error) {
             console.error('Failed to download image:', error);
         }).finally(() => {
@@ -51,7 +45,6 @@ function downloadCard() {
         });
     }, 100);
 }
-
 
 
 
