@@ -179,9 +179,7 @@ function toggleEdit(editable) {
 
         function confirmEdit() {
             toggleEdit(false);
-            loadImagesBeforeDownload().then(function() {
             document.getElementById('btnDownload').disabled = false;
-            });
         }
 
         // JavaScript for toggle class on click
