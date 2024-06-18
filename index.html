@@ -167,9 +167,11 @@ function toggleEdit(editable) {
             var idPhoto = document.getElementById('id-photo');
             if (editable) {
                 idPhoto.style.pointerEvents = 'auto';
+                
             } else {
                 idPhoto.style.pointerEvents = 'none';
             }
+     document.getElementById('btnDownload').disabled = true; // Disable download button when editing
         }
 
         function confirmEdit() {
