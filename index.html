@@ -54,13 +54,17 @@
             </div>
         </div>
     </div>
-    <button onclick="loadImagesBeforeDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
+    <button onclick="loadImagesBeforeDownload()" id="btnEditConfirm" class="btn btn--primary">
+        Edit Confirm
+    </button>
+    <button onclick="downloadCard() " id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
         Download Card
     </button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
         var isFlipped = false; // Track if the card is flipped
+        var imagesLoaded = false; // Track if images are loaded
 
         function loadImagesBeforeDownload() {
             var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
@@ -74,7 +78,8 @@
             promises.push(loadImage('/MEDIA/front.png'));
 
             Promise.all(promises).then(function() {
-                downloadCard();
+                imagesLoaded = true;
+                // downloadCard();
             }).catch(function(error) {
                 console.error('Error loading images:', error);
             });
@@ -91,6 +96,11 @@
 
         // Function to download the card
         function downloadCard() {
+            if (!imagesLoaded) {
+                console.log('Images are not loaded yet.');
+                return;
+            }
+
     var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
 
     // Get dimensions of the visible card area
@@ -186,6 +196,7 @@
     </script>
 </body>
 </html>
+
 
 
 
