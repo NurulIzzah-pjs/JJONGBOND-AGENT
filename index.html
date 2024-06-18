@@ -11,10 +11,11 @@
         .flip-card-front img, .flip-card-back img {
             display: block;
         }
-/*         .editable[disabled] {
-            background-color: transparent;
-            border: none;
-        } */
+   .editable:disabled {
+            background: transparent; /* Ensure background remains transparent */
+            border: none; /* Remove border if any */
+            color: inherit; /* Inherit font color */
+        }
     </style>
 </head>
 <body>
