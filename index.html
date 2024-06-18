@@ -154,11 +154,11 @@ function toggleEdit(editable) {
             var editableInputs = document.querySelectorAll('.editable');
             editableInputs.forEach(function(input) {
                 input.disabled = !editable;
-                // if (!editable) {
-                //     input.classList.add('disabled');
-                // } else {
-                //     input.classList.remove('disabled');
-                // }
+                if (!editable) {
+                    input.classList.add('disabled');
+                } else {
+                    input.classList.remove('disabled');
+                }
             });
 
             var idPhoto = document.getElementById('id-photo');
