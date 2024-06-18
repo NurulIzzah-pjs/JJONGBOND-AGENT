@@ -99,7 +99,7 @@
 
         // Function to download the card
         function downloadCard() {
-              loadImagesBeforeDownload().then(function() {
+        
             if (!imagesLoaded) {
                 console.log('Images are not loaded yet.');
                 return;
@@ -151,7 +151,7 @@
     });
 
     document.getElementById('btnDownload').disabled = true;
-})
+
 }
 
 function toggleEdit(editable) {
