@@ -137,7 +137,7 @@
   color: black; /* Ensure the text color is visible */
   font-size: 13px;
   font-family: 'LeagueGothic-Regular';
-  max-width: 55px;
+  max-width: 60px;
 /*   
   font-family: var(--font-league-gothic); */
 }
@@ -168,7 +168,7 @@
 .code {
   position: absolute;
   bottom: 30px;
-  left: 169px; /* Adjust as needed */
+  left: 175px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -192,7 +192,7 @@
   font-size: 13px;
   top: 127px; /* Adjust as needed */
   left: 137px; /* Adjust as needed */
-  max-width: 55px;
+  max-width: 60px;
 }
 
 .details-top1,
@@ -219,7 +219,7 @@
   font-size: 13px;
   top: 152px; /* Adjust as needed */
   left: 137px; /* Adjust as needed */
-  max-width: 55px;
+  max-width: 60px;
 }
 
 .rd {
@@ -243,7 +243,7 @@
   font-size: 13px;
   top: 175px; /* Adjust as needed */
   left: 137px; /* Adjust as needed */
-  max-width: 55px;
+  max-width: 60px;
 }
 
 .details,
@@ -280,7 +280,7 @@
   font-weight: bold;
   text-align: center;
   position: fixed; /* Position it absolutely */
-  top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
+  top: calc(100% - 20%); /* Position 30 pixels below the flip card container */
   left: 50%; /* Position at the horizontal center */
   transform: translateX(-50%); /* Adjust for half of its own width */
   z-index: 1; /* Ensure it appears above other content if needed */
@@ -296,6 +296,36 @@
   outline: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+
+#btnEditConfirm {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(134, 88, 88); /* Box brown filled */
+  color: white; /* Text white */
+  border: none;
+  border-radius: 10px; /* Rounded corners */
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  position: fixed; /* Position it absolutely */
+  top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
+  left: 50%; /* Position at the horizontal center */
+  transform: translateX(-50%); /* Adjust for half of its own width */
+  z-index: 1; /* Ensure it appears above other content if needed */
+}
+
+/* Add hover effect */
+#btnEditConfirm:hover {
+  background-color: #5c4033; /* Darker shade of brown for hover effect */
+}
+
+/* Optional: Add focus effect for accessibility */
+#btnEditConfirm:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
 
 :root {
   /* fonts */
@@ -334,5 +364,7 @@
 	font-family: 'Praise-Regular';
 	src: url('/fonts/Praise-Regular.ttf');
 }
+
+
 
 
