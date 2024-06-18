@@ -60,7 +60,7 @@
     <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">
         Edit Confirm
     </button>
-    <button onclick="downloadCard() " id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card"disabled>
+    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card"disabled>
         Download Card
     </button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
@@ -97,7 +97,14 @@
                 img.src = url;
             });
         }
-
+        
+function prepareCardDownload() {
+    if (!imagesLoaded) {
+        loadImagesBeforeDownload(); // Load images if not already loaded
+    } else {
+        downloadCard(); // Images are already loaded, proceed to download
+    }
+}
         // Function to download the card
         function downloadCard() {
         
@@ -231,6 +238,7 @@ function toggleEdit(editable) {
 
                loadImagesBeforeDownload();
     toggleEdit(false);
+              document.getElementById('btnDownload').addEventListener('click', prepareCardDownload);
         });
     </script>
 </body>
