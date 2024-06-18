@@ -142,6 +142,8 @@
   font-family: var(--font-league-gothic); */
 }
 
+
+
 .details-top,
 .title {
   display: flex;
@@ -160,7 +162,7 @@
 text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 /*   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.25),
     11px 2px 7.1px rgba(0, 0, 0, 0.25); */
-  z-index: 6; /* Ensure the code is on top */
+  z-index: 1; /* Ensure the code is on top */
   color: rgb(255, 255, 255); /* Ensure the text color is visible */
   width: 110px;
   height: 50px; /* Adjust the height as needed */
@@ -181,6 +183,8 @@ text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   /* font-family: var(--font-praise); */
   white-space: nowrap; 
 }
+
+
 
 
 /* DOB styling */
