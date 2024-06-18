@@ -11,6 +11,10 @@
         .flip-card-front img, .flip-card-back img {
             display: block;
         }
+        .editable[disabled] {
+            background-color: transparent;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -54,10 +58,12 @@
             </div>
         </div>
     </div>
-    <button onclick="loadImagesBeforeDownload()" id="btnEditConfirm" class="btn btn--primary">
+    <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">
+        Edit
+    <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">
         Edit Confirm
     </button>
-    <button onclick="downloadCard() " id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card">
+    <button onclick="downloadCard() " id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card"disabled>
         Download Card
     </button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
@@ -140,13 +146,38 @@
 
         // Reset styles after downloading
         cardSide.style.transform = ''; // Reset transform
-        
+        toggleEdit(false);
     }).catch(function(error) {
         console.error('Error generating image:', error);
     });
+
+    document.getElementById('btnDownload').disabled = true;
 }
 
+function toggleEdit(editable) {
+            var editableInputs = document.querySelectorAll('.editable');
+            editableInputs.forEach(function(input) {
+                input.disabled = !editable;
+                if (!editable) {
+                    input.classList.add('disabled');
+                } else {
+                    input.classList.remove('disabled');
+                }
+            });
 
+            var idPhoto = document.getElementById('id-photo');
+            if (editable) {
+                idPhoto.style.pointerEvents = 'auto';
+            } else {
+                idPhoto.style.pointerEvents = 'none';
+            }
+        }
+
+        function confirmEdit() {
+            toggleEdit(false);
+            loadImagesBeforeDownload();
+            document.getElementById('btnDownload').disabled = false;
+        }
 
         // JavaScript for toggle class on click
         document.addEventListener('DOMContentLoaded', function() {
@@ -190,12 +221,16 @@
 
             var btnDownload = document.getElementById('btnDownload');
             btnDownload.addEventListener('click', function() {
-                loadImagesBeforeDownload();
+                // loadImagesBeforeDownload();
+                downloadCard() ;
             });
+
+            toggleEdit(false);
         });
     </script>
 </body>
 </html>
+
 
 
 
