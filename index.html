@@ -11,10 +11,11 @@
         .flip-card-front img, .flip-card-back img {
             display: block;
         }
-   color: inherit; /* Maintain the inherited color */
-            opacity: 1;     /* Ensure full opacity */
-            -webkit-text-fill-color: inherit; 
-
+      .editable:disabled {
+            color: inherit; /* Maintain the inherited color */
+            opacity: 1; /* Ensure full opacity */
+            -webkit-text-fill-color: inherit; /* Fix for WebKit browsers */
+        }
     </style>
 </head>
 <body>
