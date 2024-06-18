@@ -297,6 +297,39 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+
+#btnEdit{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(134, 88, 88); /* Box brown filled */
+  color: white; /* Text white */
+  border: none;
+  border-radius: 10px; /* Rounded corners */
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  position: fixed; /* Position it absolutely */
+  top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
+  left: 37%; /* Position at the horizontal center */
+  transform: translateX(-50%); /* Adjust for half of its own width */
+  z-index: 1; /* Ensure it appears above other content if needed */
+}
+
+/* Add hover effect */
+#btnEdit:hover {
+  background-color: #5c4033; /* Darker shade of brown for hover effect */
+}
+
+/* Optional: Add focus effect for accessibility */
+#btnEdit:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+
+
+
 #btnEditConfirm {
   display: inline-block;
   padding: 10px 20px;
@@ -310,7 +343,7 @@
   text-align: center;
   position: fixed; /* Position it absolutely */
   top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
-  left: 50%; /* Position at the horizontal center */
+  left: 57%; /* Position at the horizontal center */
   transform: translateX(-50%); /* Adjust for half of its own width */
   z-index: 1; /* Ensure it appears above other content if needed */
 }
@@ -364,6 +397,7 @@
 	font-family: 'Praise-Regular';
 	src: url('/fonts/Praise-Regular.ttf');
 }
+
 
 
 
