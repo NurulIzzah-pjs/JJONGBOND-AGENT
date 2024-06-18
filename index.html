@@ -120,6 +120,7 @@
         style: {
             transform: 'scale(' + scale + ')', // Scale up for higher resolution
             transformOrigin: 'top left' // Set transform origin to top left corner
+  'text-shadow': '0 2px 4px rgba(0, 0, 0, 0.5)' // Ensure text-shadow is included
         },
         filter: function(node) {
             return (node.className !== 'editable'); // Exclude editable inputs from the image
