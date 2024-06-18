@@ -116,7 +116,7 @@
   padding: 0 10px; /* Add padding to prevent text from touching the edges */
   box-sizing: border-box;
   font-size: 23px;
-  font-family: 'Allan-Regular';
+  font-family: 'Allan-Bold';
   /* font-family: var(--font-allan); */
   position: absolute; /* Ensure the agent is positioned correctly */
   top: 62px; /* Adjust the position as needed */
@@ -392,8 +392,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
 @font-face {
-	font-family: 'Allan-Regular';
-	src: url('/fonts/Allan-Regular.ttf');}
+	font-family: 'Allan-Boldr';
+	src: url('/fonts/Allan-Bold.ttf');}
 
 @font-face {
 	font-family: 'LeagueGothic-Regular';
