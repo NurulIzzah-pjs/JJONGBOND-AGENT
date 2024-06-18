@@ -311,7 +311,7 @@
   text-align: center;
   position: fixed; /* Position it absolutely */
   top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
-  left: 37%; /* Position at the horizontal center */
+  left: 35%; /* Position at the horizontal center */
   transform: translateX(-50%); /* Adjust for half of its own width */
   z-index: 1; /* Ensure it appears above other content if needed */
 }
@@ -343,7 +343,7 @@
   text-align: center;
   position: fixed; /* Position it absolutely */
   top: calc(100% - 30%); /* Position 30 pixels below the flip card container */
-  left: 57%; /* Position at the horizontal center */
+  left: 59%; /* Position at the horizontal center */
   transform: translateX(-50%); /* Adjust for half of its own width */
   z-index: 1; /* Ensure it appears above other content if needed */
 }
