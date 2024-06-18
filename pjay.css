@@ -160,8 +160,8 @@
 .code1 {
   position: relative;
 /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); */
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.8), 0 4px 4px rgba(0, 0, 0, 0.8),
-    11px 2px 7.1px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5), 0 4px 4px rgba(0, 0, 0, 0.5),
+    11px 2px 7.1px rgba(0, 0, 0, 0.5);
   z-index: 1; /* Ensure the code is on top */
   color: rgb(255, 255, 255); /* Ensure the text color is visible */
   width: 110px;
