@@ -137,7 +137,7 @@
   color: black; /* Ensure the text color is visible */
   font-size: 13px;
   font-family: 'LeagueGothic-Regular';
-  max-width: 60px;
+  max-width: 57px;
 /*   
   font-family: var(--font-league-gothic); */
 }
@@ -173,7 +173,7 @@
 .code {
   position: absolute;
   bottom: 30px;
-  left: 175px; /* Adjust as needed */
+  left: 173px; /* Adjust as needed */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -199,7 +199,7 @@
   font-size: 13px;
   top: 127px; /* Adjust as needed */
   left: 137px; /* Adjust as needed */
-  max-width: 60px;
+  max-width: 57px;
 }
 
 .details-top1,
@@ -226,7 +226,7 @@
   font-size: 13px;
   top: 152px; /* Adjust as needed */
   left: 137px; /* Adjust as needed */
-  max-width: 60px;
+  max-width: 57px;
 }
 
 .rd {
