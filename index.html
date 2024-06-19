@@ -7,8 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/pjay.css">
     <title>Flip Card</title>
     <style>
-        /* Ensure images are visible in Safari */
-        .flip-card-front img, .flip-card-back img {
+         /* Ensure images are visible in Safari */
+         .flip-card-front img, .flip-card-back img {
             display: block;
         }
 
@@ -35,12 +35,12 @@
                         <div class="id-photo1" id="id-photo1"></div>
                     </div>
                     <div class="agent">
-                        <div>
+                        <div class="agent-name">
                             <input type="text" class="agent-name1 editable" value="PARK JONGSEONG">
                         </div>
                     </div>
                     <div class="details-top">
-                        <div >
+                        <div class="title">
                             <input type="text" class="title1 editable" value="SPECIAL AGENT">
                         </div>
                     </div>
@@ -48,14 +48,14 @@
                         <input type="text" class="code1 editable" value="007">
                     </div>
                     <div class="details-top1">
-                        <div >
+                        <div class="dob">
                             <input type="text" class="dob1 editable" value="20 / 04 / 2002">
                         </div>
                     </div>
-                    <div >
+                    <div class="rd">
                         <input type="text" class="rd1 editable" value="16 / 06 / 2024">
                     </div>
-                    <div >
+                    <div class="gender">
                         <input type="text" class="gender1 editable" value="MALE">
                     </div>
                 </div>
@@ -64,11 +64,11 @@
     </div>
     <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">
         Edit
-    </button>
+         </button>
     <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">
         Edit Confirm
     </button>
-    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card" disabled>
+    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card"disabled>
         Download Card
     </button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
@@ -106,90 +106,91 @@
             });
         }
         
-        function prepareCardDownload() {
-            if (!imagesLoaded) {
-                loadImagesBeforeDownload(); // Load images if not already loaded
-            } else {
-                downloadCard(); // Images are already loaded, proceed to download
-            }
-        }
-
+function prepareCardDownload() {
+    if (!imagesLoaded) {
+        loadImagesBeforeDownload(); // Load images if not already loaded
+    } else {
+        downloadCard(); // Images are already loaded, proceed to download
+    }
+}
         // Function to download the card
         function downloadCard() {
+        
             if (!imagesLoaded) {
                 console.log('Images are not loaded yet.');
                 return;
             }
 
-            var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
+    var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
 
-            // Get dimensions of the visible card area
-            var rect = cardSide.getBoundingClientRect();
-            var width = rect.width;
-            var height = rect.height;
+    // Get dimensions of the visible card area
+    var rect = cardSide.getBoundingClientRect();
+    var width = rect.width;
+    var height = rect.height;
 
-            var scale = 10; // Example: Increase resolution by 2x
-            var scaledWidth = width * scale;
-            var scaledHeight = height * scale;
+    var scale = 10; // Example: Increase resolution by 2x
+    var scaledWidth = width * scale;
+    var scaledHeight = height * scale;
 
-            var options = {
-                width: scaledWidth,
-                height: scaledHeight,
-                style: {
-                    transform: 'scale(' + scale + ')', // Scale up for higher resolution
-                    transformOrigin: 'top left', // Set transform origin to top left corner
-                    'text-shadow': '0 2px 4px rgba(0, 0, 0, 0.5)' // Ensure text-shadow is included
-                },
-                filter: function(node) {
-                    return (node.className !== 'editable'); // Exclude editable inputs from the image
-                }
-            };
-
-            // Set transform for back side if flipped
-            if (isFlipped) {
-                cardSide.style.transform = 'rotateY(180deg)';
-            }
-
-            // Calculate offset to center the image after scaling
-            var offsetX = (scaledWidth - width) / 2;
-            var offsetY = (scaledHeight - height) / 2;
-            cardSide.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)'; // Apply translation to center the image
-
-            // Generate image
-            domtoimage.toPng(cardSide, options).then(function(blob) {
-                window.saveAs(blob, 'JJONGBOND-AGENT.png');
-
-                // Reset styles after downloading
-                cardSide.style.transform = ''; // Reset transform
-                toggleEdit(false);
-            }).catch(function(error) {
-                console.error('Error generating image:', error);
-            });
-
-            document.getElementById('btnDownload').disabled = true;
+    var options = {
+        width: scaledWidth,
+        height: scaledHeight,
+        style: {
+            transform: 'scale(' + scale + ')', // Scale up for higher resolution
+            transformOrigin: 'top left', // Set transform origin to top left corner
+  'text-shadow': '0 2px 4px rgba(0, 0, 0, 0.5)' // Ensure text-shadow is included
+        },
+        filter: function(node) {
+            return (node.className !== 'editable'); // Exclude editable inputs from the image
         }
+    };
 
-        function toggleEdit(editable) {
+    // Set transform for back side if flipped
+    if (isFlipped) {
+        cardSide.style.transform = 'rotateY(180deg)';
+    }
+
+    // Calculate offset to center the image after scaling
+    var offsetX = (scaledWidth - width) / 2;
+    var offsetY = (scaledHeight - height) / 2;
+    cardSide.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)'; // Apply translation to center the image
+
+    // Generate image
+    domtoimage.toPng(cardSide, options).then(function(blob) {
+        window.saveAs(blob, 'JJONGBOND-AGENT.png');
+
+        // Reset styles after downloading
+        cardSide.style.transform = ''; // Reset transform
+        toggleEdit(false);
+    }).catch(function(error) {
+        console.error('Error generating image:', error);
+    });
+
+    document.getElementById('btnDownload').disabled = true;
+
+}
+
+function toggleEdit(editable) {
             var editableInputs = document.querySelectorAll('.editable');
             editableInputs.forEach(function(input) {
                 input.disabled = !editable;
-                if (!editable) {
-                    input.classList.add('disabled');
-                    input.style.opacity = '100'; // Reduce opacity when not editable
-                } else {
-                    input.classList.remove('disabled');
-                    input.style.opacity = '1'; // Restore full opacity when editable
-                }
+           if (!editable) {
+            input.classList.add('disabled');
+            input.style.opacity = '100'; // Reduce opacity when not editable
+        } else {
+            input.classList.remove('disabled');
+            input.style.opacity = '1'; // Restore full opacity when editable
+        }
             });
 
             var idPhoto = document.getElementById('id-photo');
             if (editable) {
                 idPhoto.style.pointerEvents = 'auto';
+                
             } else {
                 idPhoto.style.pointerEvents = 'none';
             }
-
-            document.getElementById('btnDownload').disabled = true; // Disable download button when editing
+     document.getElementById('btnDownload').disabled = true; // Disable download button when editing
         }
 
         function confirmEdit() {
@@ -240,9 +241,13 @@
             var btnDownload = document.getElementById('btnDownload');
             btnDownload.addEventListener('click', function() {
                 // loadImagesBeforeDownload();
-                downloadCard();
+                downloadCard() ;
             });
 
+
+            loadImagesBeforeDownload();
+    toggleEdit(false);
+              document.getElementById('btnDownload').addEventListener('click', prepareCardDownload);
             // Drag-and-drop functionality
             var draggables = document.querySelectorAll('.draggable');
             draggables.forEach(function(draggable) {
@@ -305,13 +310,13 @@
             document.addEventListener('dragover', function(event) {
                 event.preventDefault();
             });
+    //            loadImagesBeforeDownload();
+    // toggleEdit(false);
+    //           document.getElementById('btnDownload').addEventListener('click', prepareCardDownload);
         });
     </script>
 </body>
 </html>
-
-
-
 
 
 
