@@ -119,7 +119,9 @@
             if (!imagesLoaded) {
                 loadImagesBeforeDownload(); // Load images if not already loaded
             } else {
-                downloadCard(); // Images are already loaded, proceed to download
+                // updateCardView();
+                // downloadCard(); // Images are already loaded, proceed to download
+                document.getElementById('btnDownload').disabled = false;
             }
         }
 
@@ -260,8 +262,8 @@ function touchEnd(event) {
 
         function confirmEdit() {
             toggleEdit(false);
-            prepareCardDownload(); 
-            document.getElementById('btnDownload').disabled = false;
+            prepareCardDownload()
+            // document.getElementById('btnDownload').disabled = false;
         }
 
         // JavaScript for toggle class on click
