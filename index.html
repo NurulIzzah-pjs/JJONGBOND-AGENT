@@ -82,27 +82,19 @@
         var isDragging = false; // Track if the input field is being dragged
         var isDraggableEnabled = false;
 
-        function loadImagesBeforeDownload() {
-            var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
-            var promises = [];
 
-            images.forEach(function(img) {
-                promises.push(loadImage(img.src));
-            });
+function loadImagesBeforeDownload() {
+    var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
+    var promises = [];
 
-            // Explicitly load front.png
-            promises.push(loadImage('/MEDIA/front.png'));
-
-            Promise.all(promises).then(function() {
-                imagesLoaded = true;
-                // downloadCard();
-                if (document.getElementById('btnDownload').disabled) {
-            document.getElementById('btnDownload').disabled = false;
-        }
-    }).catch(function(error) {
-        console.error('Error loading images:', error);
-        throw error; // Propagate the error
+    images.forEach(function(img) {
+        promises.push(loadImage(img.src));
     });
+
+    // Explicitly load front.png
+    promises.push(loadImage('/MEDIA/front.png'));
+
+    return Promise.all(promises);
 }
 
 
