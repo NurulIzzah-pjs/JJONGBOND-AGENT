@@ -273,13 +273,21 @@ function touchEnd(event) {
              var draggables = document.querySelectorAll('.draggable');
             
             flipCards.forEach(function(flipCard) {
-                flipCard.addEventListener('click', function() {
-                    flipCard.classList.toggle('flipped');
-                    isFlipped = !isFlipped;
+                flipCard.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('editable')) {
+                        event.stopPropagation(); // Prevent flip if clicked on editable input
+                        return;
+                    }
+
+                    // Toggle class only if not in edit mode
+                    if (!isEditing) {
+                        flipCard.classList.toggle('flipped');
+                        isFlipped = !isFlipped; // Update the flipped status
+                    }
                 });
             });
 
-            idPhoto.addEventListener('click', function(event) {
+            idPhoto.addEventListener('click', function() {
                 fileInput.click();
             });
 
