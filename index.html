@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include jQuery UI library for draggable functionality -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/pjay.css">
     <title>Flip Card</title>
     <style>
-         /* Ensure images are visible in Safari */
-         .flip-card-front img, .flip-card-back img {
+        /* Ensure images are visible in Safari */
+        .flip-card-front img, .flip-card-back img {
             display: block;
         }
 
@@ -17,7 +21,10 @@
         }
 
         .draggable {
-            cursor: move; /* Change cursor to indicate draggable */
+            position: absolute; /* To allow dragging within the parent */
+            cursor: move; /* Change cursor to move */
+            bottom: 30px;
+  left: 175px;
         }
     </style>
 </head>
@@ -44,8 +51,8 @@
                             <input type="text" class="title1 editable" value="SPECIAL AGENT">
                         </div>
                     </div>
-                    <div class="code draggable">
-                        <input type="text" class="code1 editable" value="007">
+                    <div class="draggable">
+                        <input type="text" class="editablecode" value="007">
                     </div>
                     <div class="details-top1">
                         <div class="dob">
@@ -62,20 +69,15 @@
             </div>
         </div>
     </div>
-    <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">
-        Edit
-         </button>
-    <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">
-        Edit Confirm
-    </button>
-    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card"disabled>
-        Download Card
-    </button>
+    <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">Edit</button>
+    <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">Edit Confirm</button>
+    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card" disabled>Download Card</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
         var isFlipped = false; // Track if the card is flipped
         var imagesLoaded = false; // Track if images are loaded
+        var isEditing = false; // Track if the card is in edit mode
 
         function loadImagesBeforeDownload() {
             var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
@@ -105,92 +107,91 @@
                 img.src = url;
             });
         }
-        
-function prepareCardDownload() {
-    if (!imagesLoaded) {
-        loadImagesBeforeDownload(); // Load images if not already loaded
-    } else {
-        downloadCard(); // Images are already loaded, proceed to download
-    }
-}
+
+        function prepareCardDownload() {
+            if (!imagesLoaded) {
+                loadImagesBeforeDownload(); // Load images if not already loaded
+            } else {
+                downloadCard(); // Images are already loaded, proceed to download
+            }
+        }
+
         // Function to download the card
         function downloadCard() {
-        
             if (!imagesLoaded) {
                 console.log('Images are not loaded yet.');
                 return;
             }
 
-    var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
+            var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
 
-    // Get dimensions of the visible card area
-    var rect = cardSide.getBoundingClientRect();
-    var width = rect.width;
-    var height = rect.height;
+            // Get dimensions of the visible card area
+            var rect = cardSide.getBoundingClientRect();
+            var width = rect.width;
+            var height = rect.height;
 
-    var scale = 10; // Example: Increase resolution by 2x
-    var scaledWidth = width * scale;
-    var scaledHeight = height * scale;
+            var scale = 10; // Example: Increase resolution by 2x
+            var scaledWidth = width * scale;
+            var scaledHeight = height * scale;
 
-    var options = {
-        width: scaledWidth,
-        height: scaledHeight,
-        style: {
-            transform: 'scale(' + scale + ')', // Scale up for higher resolution
-            transformOrigin: 'top left', // Set transform origin to top left corner
-  'text-shadow': '0 2px 4px rgba(0, 0, 0, 0.5)' // Ensure text-shadow is included
-        },
-        filter: function(node) {
-            return (node.className !== 'editable'); // Exclude editable inputs from the image
+            var options = {
+                width: scaledWidth,
+                height: scaledHeight,
+                style: {
+                    transform: 'scale(' + scale + ')', // Scale up for higher resolution
+                    transformOrigin: 'top left', // Set transform origin to top left corner
+                    'text-shadow': '0 2px 4px rgba(0, 0, 0, 0.5)' // Ensure text-shadow is included
+                },
+                filter: function(node) {
+                    return (node.className !== 'editable'); // Exclude editable inputs from the image
+                }
+            };
+
+            // Set transform for back side if flipped
+            if (isFlipped) {
+                cardSide.style.transform = 'rotateY(180deg)';
+            }
+
+            // Calculate offset to center the image after scaling
+            var offsetX = (scaledWidth - width) / 2;
+            var offsetY = (scaledHeight - height) / 2;
+            cardSide.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)'; // Apply translation to center the image
+
+            // Generate image
+            domtoimage.toPng(cardSide, options).then(function(blob) {
+                window.saveAs(blob, 'JJONGBOND-AGENT.png');
+
+                // Reset styles after downloading
+                cardSide.style.transform = ''; // Reset transform
+                toggleEdit(false);
+            }).catch(function(error) {
+                console.error('Error generating image:', error);
+            });
+
+            document.getElementById('btnDownload').disabled = true;
         }
-    };
 
-    // Set transform for back side if flipped
-    if (isFlipped) {
-        cardSide.style.transform = 'rotateY(180deg)';
-    }
-
-    // Calculate offset to center the image after scaling
-    var offsetX = (scaledWidth - width) / 2;
-    var offsetY = (scaledHeight - height) / 2;
-    cardSide.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)'; // Apply translation to center the image
-
-    // Generate image
-    domtoimage.toPng(cardSide, options).then(function(blob) {
-        window.saveAs(blob, 'JJONGBOND-AGENT.png');
-
-        // Reset styles after downloading
-        cardSide.style.transform = ''; // Reset transform
-        toggleEdit(false);
-    }).catch(function(error) {
-        console.error('Error generating image:', error);
-    });
-
-    document.getElementById('btnDownload').disabled = true;
-
-}
-
-function toggleEdit(editable) {
+        function toggleEdit(editable) {
+            isEditing = editable; // Update the editing status
             var editableInputs = document.querySelectorAll('.editable');
             editableInputs.forEach(function(input) {
                 input.disabled = !editable;
-           if (!editable) {
-            input.classList.add('disabled');
-            input.style.opacity = '100'; // Reduce opacity when not editable
-        } else {
-            input.classList.remove('disabled');
-            input.style.opacity = '1'; // Restore full opacity when editable
-        }
+                if (!editable) {
+                    input.classList.add('disabled');
+                    input.style.opacity = '100'; // Reduce opacity when not editable
+                } else {
+                    input.classList.remove('disabled');
+                    input.style.opacity = '1'; // Restore full opacity when editable
+                }
             });
 
             var idPhoto = document.getElementById('id-photo');
             if (editable) {
                 idPhoto.style.pointerEvents = 'auto';
-                
             } else {
                 idPhoto.style.pointerEvents = 'none';
             }
-     document.getElementById('btnDownload').disabled = true; // Disable download button when editing
+            document.getElementById('btnDownload').disabled = true; // Disable download button when editing
         }
 
         function confirmEdit() {
@@ -205,11 +206,14 @@ function toggleEdit(editable) {
             var idPhoto = document.getElementById('id-photo');
             var idPhoto1 = document.getElementById('id-photo1');
             var editableInputs = document.querySelectorAll('.editable');
+            var draggables = document.querySelectorAll('.draggable');
 
             flipCards.forEach(function(flipCard) {
                 flipCard.addEventListener('click', function() {
-                    flipCard.classList.toggle('flipped');
-                    isFlipped = !isFlipped;
+                    if (!isEditing) { // Only allow flipping if not in edit mode
+                        flipCard.classList.toggle('flipped');
+                        isFlipped = !isFlipped;
+                    }
                 });
             });
 
@@ -240,16 +244,13 @@ function toggleEdit(editable) {
 
             var btnDownload = document.getElementById('btnDownload');
             btnDownload.addEventListener('click', function() {
-                // loadImagesBeforeDownload();
-                downloadCard() ;
+                downloadCard();
             });
 
-
             loadImagesBeforeDownload();
-    toggleEdit(false);
-              document.getElementById('btnDownload').addEventListener('click', prepareCardDownload);
+            toggleEdit(false);
+
             // Drag-and-drop functionality
-            var draggables = document.querySelectorAll('.draggable');
             draggables.forEach(function(draggable) {
                 draggable.addEventListener('mousedown', function(event) {
                     startDragging(event, draggable);
@@ -310,14 +311,21 @@ function toggleEdit(editable) {
             document.addEventListener('dragover', function(event) {
                 event.preventDefault();
             });
-    //            loadImagesBeforeDownload();
-    // toggleEdit(false);
-    //           document.getElementById('btnDownload').addEventListener('click', prepareCardDownload);
+
+            $(document).ready(function() {
+                // Make the input field draggable
+                $(".editablecode").draggable({
+                    // Ensure dragging starts only when clicking on the input
+                    cancel: false
+                });
+
+                // Make the input field editable
+                $(".editablecode").prop('readonly', false);
+            });
         });
     </script>
 </body>
 </html>
-
 
 
 
