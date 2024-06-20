@@ -196,16 +196,59 @@
             }
             document.getElementById('btnDownload').disabled = true; // Disable download button when editing
         }
+        var isDraggingInput = false; // Track if the input is being dragged
 
-        function toggleDrag() {
+function toggleDrag() {
     isDraggableEnabled = !isDraggableEnabled; // Toggle draggable status
     var draggableInput = document.querySelector('.editablecode');
 
     if (isDraggableEnabled) {
-        $(draggableInput).draggable('enable'); // Enable draggable
+        // Enable dragging on touch devices
+        draggableInput.addEventListener('touchstart', touchStart, false);
+        draggableInput.addEventListener('touchmove', touchMove, false);
+        draggableInput.addEventListener('touchend', touchEnd, false);
     } else {
-        $(draggableInput).draggable('disable'); // Disable draggable
+        // Disable dragging on touch devices
+        draggableInput.removeEventListener('touchstart', touchStart, false);
+        draggableInput.removeEventListener('touchmove', touchMove, false);
+        draggableInput.removeEventListener('touchend', touchEnd, false);
     }
+}
+
+// Define touch event handlers
+var startX, startY, currentX, currentY;
+
+function touchStart(event) {
+    event.preventDefault();
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+    
+    // Prevent input from being editable when dragging starts
+    var draggableInput = document.querySelector('.editablecode');
+    draggableInput.readOnly = true;
+    isDraggingInput = true;
+}
+
+function touchMove(event) {
+    event.preventDefault();
+    if (!isDraggingInput) return;
+
+    currentX = event.touches[0].clientX - startX;
+    currentY = event.touches[0].clientY - startY;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+
+    var draggableInput = document.querySelector('.editablecode');
+    draggableInput.style.left = (draggableInput.offsetLeft + currentX) + 'px';
+    draggableInput.style.top = (draggableInput.offsetTop + currentY) + 'px';
+}
+
+function touchEnd(event) {
+    event.preventDefault();
+    // Enable input editing when dragging ends
+    var draggableInput = document.querySelector('.editablecode');
+    draggableInput.readOnly = false;
+    isDraggingInput = false;
 }
 
 
@@ -289,6 +332,7 @@
     </script>
 </body>
 </html>
+
 
 
 
