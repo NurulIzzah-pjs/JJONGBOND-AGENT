@@ -78,6 +78,7 @@
         var isFlipped = false; // Track if the card is flipped
         var imagesLoaded = false; // Track if images are loaded
         var isEditing = false; // Track if the card is in edit mode
+        var isDragging = false; // Track if the input field is being dragged
 
         function loadImagesBeforeDownload() {
             var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
@@ -209,15 +210,21 @@
             var draggables = document.querySelectorAll('.draggable');
 
             flipCards.forEach(function(flipCard) {
-                flipCard.addEventListener('click', function() {
-                    if (!isEditing) { // Only allow flipping if not in edit mode
+                flipCard.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('editable')) {
+                        event.stopPropagation(); // Prevent flip if clicked on editable input
+                        return;
+                    }
+
+                    // Toggle class only if not in edit mode
+                    if (!isEditing) {
                         flipCard.classList.toggle('flipped');
-                        isFlipped = !isFlipped;
+                        isFlipped = !isFlipped; // Update the flipped status
                     }
                 });
             });
 
-            idPhoto.addEventListener('click', function(event) {
+            idPhoto.addEventListener('click', function() {
                 fileInput.click();
             });
 
@@ -250,60 +257,61 @@
             loadImagesBeforeDownload();
             toggleEdit(false);
 
-            // Drag-and-drop functionality
+            // Long press to drag functionality
             draggables.forEach(function(draggable) {
-                draggable.addEventListener('mousedown', function(event) {
-                    startDragging(event, draggable);
-                });
+                let longPressTimer;
+                let longPressDuration = 500; // 500ms for a long press
 
                 draggable.addEventListener('touchstart', function(event) {
-                    startDragging(event, draggable);
+                    longPressTimer = setTimeout(function() {
+                        isDragging = true;
+                        startDragging(event, draggable);
+                    }, longPressDuration);
+
+                    event.preventDefault(); // Prevent default touch behavior
+                });
+
+                draggable.addEventListener('touchend', function(event) {
+                    clearTimeout(longPressTimer);
+                    isDragging = false; // Reset dragging flag
                 });
             });
 
             function startDragging(event, draggable) {
-                event.preventDefault(); // Prevent default drag behavior
+                if (!isDragging) return;
 
                 var cardBack = document.querySelector('.flip-card-back');
                 var rect = cardBack.getBoundingClientRect();
 
-                // Initial position of mouse or touch
-                var startX = event.clientX || event.touches[0].clientX;
-                var startY = event.clientY || event.touches[0].clientY;
+                var startX = event.touches[0].clientX;
+                var startY = event.touches[0].clientY;
 
-                // Initial position of the draggable element
                 var startLeft = parseFloat(draggable.style.left) || 0;
                 var startTop = parseFloat(draggable.style.top) || 0;
 
-                // Offset position within the draggable element
                 var offsetX = startX - draggable.getBoundingClientRect().left;
                 var offsetY = startY - draggable.getBoundingClientRect().top;
 
-                // Function to move the draggable element
                 function moveElement(event) {
-                    var currentX = event.clientX || event.touches[0].clientX;
-                    var currentY = event.clientY || event.touches[0].clientY;
+                    if (!isDragging) return;
+
+                    var currentX = event.touches[0].clientX;
+                    var currentY = event.touches[0].clientY;
 
                     var moveLeft = currentX - rect.left - offsetX;
                     var moveTop = currentY - rect.top - offsetY;
 
-                    // Apply new position
                     draggable.style.left = moveLeft + 'px';
                     draggable.style.top = moveTop + 'px';
                 }
 
-                // Event listeners for moving the element
-                document.addEventListener('mousemove', moveElement);
                 document.addEventListener('touchmove', moveElement);
 
-                // Function to stop dragging
                 function stopDragging() {
-                    document.removeEventListener('mousemove', moveElement);
                     document.removeEventListener('touchmove', moveElement);
+                    isDragging = false; // Reset dragging flag
                 }
 
-                // Event listeners for stopping dragging
-                document.addEventListener('mouseup', stopDragging);
                 document.addEventListener('touchend', stopDragging);
             }
 
@@ -313,10 +321,9 @@
             });
 
             $(document).ready(function() {
-                // Make the input field draggable
+                // Make the input field draggable with jQuery
                 $(".editablecode").draggable({
-                    // Ensure dragging starts only when clicking on the input
-                    cancel: false
+                    cancel: false // Allow dragging
                 });
 
                 // Remove touchstart event from input to allow editing on mobile
@@ -331,8 +338,6 @@
     </script>
 </body>
 </html>
-
-
 
 
 
