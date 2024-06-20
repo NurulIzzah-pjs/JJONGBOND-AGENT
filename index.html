@@ -185,6 +185,7 @@ function prepareCardDownload() {
 }
 
 function toggleEdit(editable) {
+    isEditing = editable; 
             var editableInputs = document.querySelectorAll('.editable');
             editableInputs.forEach(function(input) {
                 input.disabled = !editable;
