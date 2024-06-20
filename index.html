@@ -25,9 +25,28 @@
             bottom: 30px;
             left: 175px;
         }
+         /* Add background image */
+         body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #000; /* Fallback color */
+        }
+        
+        .background-image {
+            width: 675px;
+            height: 1200px;
+            background-image: url('/MEDIA/background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
     </style>
 </head>
 <body>
+    <div class="background-image">
     <div class="flip-card-container">
         <div class="flip-card" id="districtCard">
             <div class="flip-card-inner">
@@ -74,6 +93,17 @@
         <button onclick="confirmEdit()" id="btnEditConfirm">Confirm Edit</button>
         <button onclick="prepareCardDownload()" id="btnDownload">Download</button>
       </div>
+    </div>
+    <!-- <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">
+        Edit
+         </button>
+    <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">
+        Edit Confirm
+    </button>
+    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card"disabled>
+        Download Card
+    </button> -->
+     <!-- <button onclick="toggleDrag()" id="btnToggleDrag" class="btn btn--primary">Toggle Drag</button> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
@@ -338,7 +368,6 @@ function touchEnd(event) {
     </script>
 </body>
 </html>
-
 
 
 
