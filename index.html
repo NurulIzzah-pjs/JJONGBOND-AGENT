@@ -4,27 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Include jQuery UI library for draggable functionality -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/pjay.css">
     <title>Flip Card</title>
     <style>
         /* Ensure images are visible in Safari */
         .flip-card-front img, .flip-card-back img {
             display: block;
-        }
-
-        .flip-card-back {
-            position: relative; /* Ensure the back of the card is relative for absolute positioning */
-        }
-
-        .draggable {
-            position: absolute; /* To allow dragging within the parent */
-            cursor: move; /* Change cursor to move */
-            bottom: 30px;
-            left: 175px;
         }
     </style>
 </head>
@@ -51,8 +36,8 @@
                             <input type="text" class="title1 editable" value="SPECIAL AGENT">
                         </div>
                     </div>
-                    <div class="draggable">
-                        <input type="text" class="editablecode" value="007">
+                    <div class="code">
+                        <input type="text" class="code1 editable" value="007">
                     </div>
                     <div class="details-top1">
                         <div class="dob">
@@ -69,34 +54,40 @@
             </div>
         </div>
     </div>
-    <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">Edit</button>
-    <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">Edit Confirm</button>
-    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card" disabled>Download Card</button>
-    <button onclick="toggleDrag()" id="btnToggleDrag" class="btn btn--primary">Toggle Drag</button>
+    <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">
+        Edit
+         </button>
+    <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">
+        Edit Confirm
+    </button>
+    <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card"disabled>
+        Download Card
+    </button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
         var isFlipped = false; // Track if the card is flipped
         var imagesLoaded = false; // Track if images are loaded
-        var isEditing = false; // Track if the card is in edit mode
-        var isDragging = false; // Track if the input field is being dragged
-        var isDraggableEnabled = false;
 
+        function loadImagesBeforeDownload() {
+            var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
+            var promises = [];
 
-function loadImagesBeforeDownload() {
-    var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
-    var promises = [];
+            images.forEach(function(img) {
+                promises.push(loadImage(img.src));
+            });
 
-    images.forEach(function(img) {
-        promises.push(loadImage(img.src));
-    });
+            // Explicitly load front.png
+            promises.push(loadImage('/MEDIA/front.png'));
 
-    // Explicitly load front.png
-    promises.push(loadImage('/MEDIA/front.png'));
-
-    return Promise.all(promises);
-}
-
+            Promise.all(promises).then(function() {
+                imagesLoaded = true;
+                // downloadCard();
+            }).catch(function(error) {
+                console.error('Error loading images:', error);
+                throw error; // Propagate the error
+            });
+        }
 
         function loadImage(url) {
             return new Promise((resolve, reject) => {
@@ -106,167 +97,97 @@ function loadImagesBeforeDownload() {
                 img.src = url;
             });
         }
-
-  function prepareCardDownload() {
-    // Disable the download button until everything is ready
-    document.getElementById('btnDownload').disabled = true;
-
-    // Check if all images are loaded
+        
+function prepareCardDownload() {
     if (!imagesLoaded) {
-        loadImagesBeforeDownload().then(function() {
-            // After images are loaded, update the card view if needed
-            // updateCardView(); 
-
-            // Now enable the download button
-            document.getElementById('btnDownload').disabled = false;
-        }).catch(function(error) {
-            console.error('Error loading images:', error);
-        });
+        loadImagesBeforeDownload(); // Load images if not already loaded
     } else {
-        // Images are already loaded, enable download immediately
-        document.getElementById('btnDownload').disabled = false;
+        downloadCard(); // Images are already loaded, proceed to download
     }
 }
-
         // Function to download the card
         function downloadCard() {
+        
             if (!imagesLoaded) {
                 console.log('Images are not loaded yet.');
                 return;
             }
 
-            var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
+    var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
 
-            // Get dimensions of the visible card area
-            var rect = cardSide.getBoundingClientRect();
-            var width = rect.width;
-            var height = rect.height;
+    // Get dimensions of the visible card area
+    var rect = cardSide.getBoundingClientRect();
+    var width = rect.width;
+    var height = rect.height;
 
-            var scale = 10; // Example: Increase resolution by 2x
-            var scaledWidth = width * scale;
-            var scaledHeight = height * scale;
+    var scale = 10; // Example: Increase resolution by 2x
+    var scaledWidth = width * scale;
+    var scaledHeight = height * scale;
 
-            var options = {
-                width: scaledWidth,
-                height: scaledHeight,
-                style: {
-                    transform: 'scale(' + scale + ')', // Scale up for higher resolution
-                    transformOrigin: 'top left', // Set transform origin to top left corner
-                    'text-shadow': '0 2px 4px rgba(0, 0, 0, 0.5)' // Ensure text-shadow is included
-                },
-                filter: function(node) {
-                    return (node.className !== 'editable'); // Exclude editable inputs from the image
-                }
-            };
-
-            // Set transform for back side if flipped
-            if (isFlipped) {
-                cardSide.style.transform = 'rotateY(180deg)';
-            }
-
-            // Calculate offset to center the image after scaling
-            var offsetX = (scaledWidth - width) / 2;
-            var offsetY = (scaledHeight - height) / 2;
-            cardSide.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)'; // Apply translation to center the image
-
-            // Generate image
-            domtoimage.toPng(cardSide, options).then(function(blob) {
-                window.saveAs(blob, 'JJONGBOND-AGENT.png');
-
-                // Reset styles after downloading
-                cardSide.style.transform = ''; // Reset transform
-                toggleEdit(false);
-                
-            document.getElementById('btnDownload').disabled = false;
-            }).catch(function(error) {
-                console.error('Error generating image:', error);
-            });
-
-            document.getElementById('btnDownload').disabled = true;
+    var options = {
+        width: scaledWidth,
+        height: scaledHeight,
+        style: {
+            transform: 'scale(' + scale + ')', // Scale up for higher resolution
+            transformOrigin: 'top left', // Set transform origin to top left corner
+  'text-shadow': '0 2px 4px rgba(0, 0, 0, 0.5)' // Ensure text-shadow is included
+        },
+        filter: function(node) {
+            return (node.className !== 'editable'); // Exclude editable inputs from the image
         }
+    };
 
-        function toggleEdit(editable) {
-            isEditing = editable; // Update the editing status
+    // Set transform for back side if flipped
+    if (isFlipped) {
+        cardSide.style.transform = 'rotateY(180deg)';
+    }
+
+    // Calculate offset to center the image after scaling
+    var offsetX = (scaledWidth - width) / 2;
+    var offsetY = (scaledHeight - height) / 2;
+    cardSide.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)'; // Apply translation to center the image
+
+    // Generate image
+    domtoimage.toPng(cardSide, options).then(function(blob) {
+        window.saveAs(blob, 'JJONGBOND-AGENT.png');
+
+        // Reset styles after downloading
+        cardSide.style.transform = ''; // Reset transform
+        toggleEdit(false);
+    }).catch(function(error) {
+        console.error('Error generating image:', error);
+    });
+
+    document.getElementById('btnDownload').disabled = true;
+
+}
+
+function toggleEdit(editable) {
             var editableInputs = document.querySelectorAll('.editable');
             editableInputs.forEach(function(input) {
                 input.disabled = !editable;
-                if (!editable) {
-                    input.classList.add('disabled');
-                    input.style.opacity = '100'; // Reduce opacity when not editable
-                } else {
-                    input.classList.remove('disabled');
-                    input.style.opacity = '1'; // Restore full opacity when editable
-                }
+           if (!editable) {
+            input.classList.add('disabled');
+            input.style.opacity = '100'; // Reduce opacity when not editable
+        } else {
+            input.classList.remove('disabled');
+            input.style.opacity = '1'; // Restore full opacity when editable
+        }
             });
 
             var idPhoto = document.getElementById('id-photo');
             if (editable) {
                 idPhoto.style.pointerEvents = 'auto';
+                
             } else {
                 idPhoto.style.pointerEvents = 'none';
             }
-            document.getElementById('btnDownload').disabled = true; // Disable download button when editing
+     document.getElementById('btnDownload').disabled = true; // Disable download button when editing
         }
-        var isDraggingInput = false; // Track if the input is being dragged
-
-function toggleDrag() {
-    isDraggableEnabled = !isDraggableEnabled; // Toggle draggable status
-    var draggableInput = document.querySelector('.editablecode');
-
-    if (isDraggableEnabled) {
-        // Enable dragging on touch devices
-        draggableInput.addEventListener('touchstart', touchStart, false);
-        draggableInput.addEventListener('touchmove', touchMove, false);
-        draggableInput.addEventListener('touchend', touchEnd, false);
-    } else {
-        // Disable dragging on touch devices
-        draggableInput.removeEventListener('touchstart', touchStart, false);
-        draggableInput.removeEventListener('touchmove', touchMove, false);
-        draggableInput.removeEventListener('touchend', touchEnd, false);
-    }
-}
-
-// Define touch event handlers
-var startX, startY, currentX, currentY;
-
-function touchStart(event) {
-    event.preventDefault();
-    startX = event.touches[0].clientX;
-    startY = event.touches[0].clientY;
-    
-    // Prevent input from being editable when dragging starts
-    var draggableInput = document.querySelector('.editablecode');
-    draggableInput.readOnly = true;
-    isDraggingInput = true;
-}
-
-function touchMove(event) {
-    event.preventDefault();
-    if (!isDraggingInput) return;
-
-    currentX = event.touches[0].clientX - startX;
-    currentY = event.touches[0].clientY - startY;
-    startX = event.touches[0].clientX;
-    startY = event.touches[0].clientY;
-
-    var draggableInput = document.querySelector('.editablecode');
-    draggableInput.style.left = (draggableInput.offsetLeft + currentX) + 'px';
-    draggableInput.style.top = (draggableInput.offsetTop + currentY) + 'px';
-}
-
-function touchEnd(event) {
-    event.preventDefault();
-    // Enable input editing when dragging ends
-    var draggableInput = document.querySelector('.editablecode');
-    draggableInput.readOnly = false;
-    isDraggingInput = false;
-}
-
 
         function confirmEdit() {
             toggleEdit(false);
-            prepareCardDownload()
-            // document.getElementById('btnDownload').disabled = false;
+            document.getElementById('btnDownload').disabled = false;
         }
 
         // JavaScript for toggle class on click
@@ -276,24 +197,15 @@ function touchEnd(event) {
             var idPhoto = document.getElementById('id-photo');
             var idPhoto1 = document.getElementById('id-photo1');
             var editableInputs = document.querySelectorAll('.editable');
-            var draggables = document.querySelectorAll('.draggable');
 
             flipCards.forEach(function(flipCard) {
-                flipCard.addEventListener('click', function(event) {
-                    if (event.target.classList.contains('editable')) {
-                        event.stopPropagation(); // Prevent flip if clicked on editable input
-                        return;
-                    }
-
-                    // Toggle class only if not in edit mode
-                    if (!isEditing) {
-                        flipCard.classList.toggle('flipped');
-                        isFlipped = !isFlipped; // Update the flipped status
-                    }
+                flipCard.addEventListener('click', function() {
+                    flipCard.classList.toggle('flipped');
+                    isFlipped = !isFlipped;
                 });
             });
 
-            idPhoto.addEventListener('click', function() {
+            idPhoto.addEventListener('click', function(event) {
                 fileInput.click();
             });
 
@@ -320,30 +232,18 @@ function touchEnd(event) {
 
             var btnDownload = document.getElementById('btnDownload');
             btnDownload.addEventListener('click', function() {
-                downloadCard();
+                // loadImagesBeforeDownload();
+                downloadCard() ;
             });
 
-            loadImagesBeforeDownload();
-            toggleEdit(false);
-
-            // Draggable functionality
-            $(document).ready(function() {
-    $(".editablecode").draggable({
-        cancel: null // Allow dragging and editing
-    });
-
-    $(".editablecode").on('touchstart', function(event) {
-        // Allow editing on touch
-        event.stopPropagation();
-    });
-
-    // Make the input field editable
-    $(".editablecode").prop('readonly', false);
-});
+               loadImagesBeforeDownload();
+    toggleEdit(false);
+              document.getElementById('btnDownload').addEventListener('click', prepareCardDownload);
         });
     </script>
 </body>
 </html>
+
 
 
 
