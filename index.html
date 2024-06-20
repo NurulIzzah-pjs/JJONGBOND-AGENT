@@ -96,11 +96,15 @@
             Promise.all(promises).then(function() {
                 imagesLoaded = true;
                 // downloadCard();
-            }).catch(function(error) {
-                console.error('Error loading images:', error);
-                throw error; // Propagate the error
-            });
+                if (document.getElementById('btnDownload').disabled) {
+            document.getElementById('btnDownload').disabled = false;
         }
+    }).catch(function(error) {
+        console.error('Error loading images:', error);
+        throw error; // Propagate the error
+    });
+}
+
 
         function loadImage(url) {
             return new Promise((resolve, reject) => {
@@ -332,7 +336,6 @@ function touchEnd(event) {
     </script>
 </body>
 </html>
-
 
 
 
