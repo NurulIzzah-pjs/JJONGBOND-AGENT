@@ -128,10 +128,6 @@
             if (!imagesLoaded) {
                 console.log('Images are not loaded yet.');
                 return;
-
-                   setTimeout(function() {
-        cardSide.style.transform = ''; // Reset any transformations
-    }, 500);
             }
 
             var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
@@ -175,6 +171,8 @@
                 // Reset styles after downloading
                 cardSide.style.transform = ''; // Reset transform
                 toggleEdit(false);
+                
+            document.getElementById('btnDownload').disabled = false;
             }).catch(function(error) {
                 console.error('Error generating image:', error);
             });
