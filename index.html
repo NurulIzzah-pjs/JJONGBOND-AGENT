@@ -115,15 +115,26 @@
             });
         }
 
-        function prepareCardDownload() {
-            if (!imagesLoaded) {
-                loadImagesBeforeDownload(); // Load images if not already loaded
-            } else {
-                // updateCardView();
-                // downloadCard(); // Images are already loaded, proceed to download
-                document.getElementById('btnDownload').disabled = false;
-            }
-        }
+  function prepareCardDownload() {
+    // Disable the download button until everything is ready
+    document.getElementById('btnDownload').disabled = true;
+
+    // Check if all images are loaded
+    if (!imagesLoaded) {
+        loadImagesBeforeDownload().then(function() {
+            // After images are loaded, update the card view if needed
+            // updateCardView(); 
+
+            // Now enable the download button
+            document.getElementById('btnDownload').disabled = false;
+        }).catch(function(error) {
+            console.error('Error loading images:', error);
+        });
+    } else {
+        // Images are already loaded, enable download immediately
+        document.getElementById('btnDownload').disabled = false;
+    }
+}
 
         // Function to download the card
         function downloadCard() {
