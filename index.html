@@ -24,7 +24,7 @@
             position: absolute; /* To allow dragging within the parent */
             cursor: move; /* Change cursor to move */
             bottom: 30px;
-  left: 175px;
+            left: 175px;
         }
     </style>
 </head>
@@ -319,6 +319,11 @@
                     cancel: false
                 });
 
+                // Remove touchstart event from input to allow editing on mobile
+                $(".editablecode").on('touchstart', function(event) {
+                    event.stopPropagation();
+                });
+
                 // Make the input field editable
                 $(".editablecode").prop('readonly', false);
             });
@@ -326,6 +331,7 @@
     </script>
 </body>
 </html>
+
 
 
 
