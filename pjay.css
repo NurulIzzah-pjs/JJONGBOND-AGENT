@@ -298,7 +298,7 @@ background : transparent;
 /* Style for the button container */
 #buttonContainer {
   position: fixed; /* Fixed positioning for the entire container */
-  bottom: 5%; /* Position it above the bottom of the viewport */
+  bottom: 13%; /* Position it above the bottom of the viewport */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Adjust for half of its own width */
   display: flex;
