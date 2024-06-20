@@ -323,7 +323,7 @@
 
             // Prevent default dragover behavior to allow drop
             document.addEventListener('dragover', function(event) {
-                // event.preventDefault();
+                event.preventDefault();
             });
 
             $(document).ready(function() {
@@ -334,7 +334,7 @@
 
                 // Remove touchstart event from input to allow editing on mobile
                 $(".editablecode").on('touchstart', function(event) {
-                    // event.stopPropagation();
+                    event.stopPropagation();
                 });
 
                 // Make the input field editable
