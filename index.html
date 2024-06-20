@@ -72,6 +72,7 @@
     <button onclick="toggleEdit(true)" id="btnEdit" class="btn btn--primary">Edit</button>
     <button onclick="confirmEdit()" id="btnEditConfirm" class="btn btn--primary">Edit Confirm</button>
     <button onclick="prepareCardDownload()" id="btnDownload" class="btn btn--primary" data-splitbee-event="Download Card" disabled>Download Card</button>
+    <button onclick="toggleDrag()" id="btnToggleDrag" class="btn btn--primary">Toggle Drag</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
@@ -79,6 +80,7 @@
         var imagesLoaded = false; // Track if images are loaded
         var isEditing = false; // Track if the card is in edit mode
         var isDragging = false; // Track if the input field is being dragged
+        var isDraggableEnabled = false;
 
         function loadImagesBeforeDownload() {
             var images = document.querySelectorAll('.flip-card-front img, .flip-card-back img');
@@ -195,6 +197,18 @@
             document.getElementById('btnDownload').disabled = true; // Disable download button when editing
         }
 
+        function toggleDrag() {
+    isDraggableEnabled = !isDraggableEnabled; // Toggle draggable status
+    var draggableInput = document.querySelector('.editablecode');
+
+    if (isDraggableEnabled) {
+        $(draggableInput).draggable('enable'); // Enable draggable
+    } else {
+        $(draggableInput).draggable('disable'); // Disable draggable
+    }
+}
+
+
         function confirmEdit() {
             toggleEdit(false);
             document.getElementById('btnDownload').disabled = false;
@@ -258,19 +272,24 @@
             toggleEdit(false);
 
             // Draggable functionality
-            $(".editablecode").draggable({
-                cancel: null // Allow dragging and editing
-            });
+            $(document).ready(function() {
+    $(".editablecode").draggable({
+        cancel: null // Allow dragging and editing
+    });
 
-            $(".editablecode").on('touchstart', function(event) {
-                // Allow editing on touch
-                event.stopPropagation();
-            });
+    $(".editablecode").on('touchstart', function(event) {
+        // Allow editing on touch
+        event.stopPropagation();
+    });
 
-            // Make the input field editable
-            $(".editablecode").prop('readonly', false);
+    // Make the input field editable
+    $(".editablecode").prop('readonly', false);
+});
         });
     </script>
 </body>
 </html>
+
+
+
 
