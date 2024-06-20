@@ -260,6 +260,7 @@ function touchEnd(event) {
 
         function confirmEdit() {
             toggleEdit(false);
+            prepareCardDownload(); 
             document.getElementById('btnDownload').disabled = false;
         }
 
