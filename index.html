@@ -257,92 +257,20 @@
             loadImagesBeforeDownload();
             toggleEdit(false);
 
-            // Long press to drag functionality
-            draggables.forEach(function(draggable) {
-                let longPressTimer;
-                let longPressDuration = 500; // 500ms for a long press
-
-                draggable.addEventListener('touchstart', function(event) {
-                    longPressTimer = setTimeout(function() {
-                        isDragging = true;
-                        startDragging(event, draggable);
-                    }, longPressDuration);
-
-                    event.preventDefault(); // Prevent default touch behavior
-                });
-
-                draggable.addEventListener('touchend', function(event) {
-                    clearTimeout(longPressTimer);
-                    isDragging = false; // Reset dragging flag
-                });
-
-                draggable.addEventListener('touchmove', function(event) {
-                    if (isDragging) {
-                        startDragging(event, draggable);
-                    }
-                });
+            // Draggable functionality
+            $(".editablecode").draggable({
+                cancel: null // Allow dragging and editing
             });
 
-            function startDragging(event, draggable) {
-                if (!isDragging) return;
-
-                var cardBack = document.querySelector('.flip-card-back');
-                var rect = cardBack.getBoundingClientRect();
-
-                var startX = event.touches[0].clientX;
-                var startY = event.touches[0].clientY;
-
-                var startLeft = parseFloat(draggable.style.left) || 0;
-                var startTop = parseFloat(draggable.style.top) || 0;
-
-                var offsetX = startX - draggable.getBoundingClientRect().left;
-                var offsetY = startY - draggable.getBoundingClientRect().top;
-
-                function moveElement(event) {
-                    if (!isDragging) return;
-
-                    var currentX = event.touches[0].clientX;
-                    var currentY = event.touches[0].clientY;
-
-                    var moveLeft = currentX - rect.left - offsetX;
-                    var moveTop = currentY - rect.top - offsetY;
-
-                    draggable.style.left = moveLeft + 'px';
-                    draggable.style.top = moveTop + 'px';
-                }
-
-                document.addEventListener('touchmove', moveElement);
-
-                function stopDragging() {
-                    document.removeEventListener('touchmove', moveElement);
-                    isDragging = false; // Reset dragging flag
-                }
-
-                document.addEventListener('touchend', stopDragging);
-            }
-
-            // Prevent default dragover behavior to allow drop
-            document.addEventListener('dragover', function(event) {
-                event.preventDefault();
+            $(".editablecode").on('touchstart', function(event) {
+                // Allow editing on touch
+                event.stopPropagation();
             });
 
-            $(document).ready(function() {
-                // Make the input field draggable with jQuery
-                $(".editablecode").draggable({
-                    cancel: false // Allow dragging
-                });
-
-                // Remove touchstart event from input to allow editing on mobile
-                $(".editablecode").on('touchstart', function(event) {
-                    event.stopPropagation();
-                });
-
-                // Make the input field editable
-                $(".editablecode").prop('readonly', false);
-            });
+            // Make the input field editable
+            $(".editablecode").prop('readonly', false);
         });
     </script>
 </body>
 </html>
-
 
