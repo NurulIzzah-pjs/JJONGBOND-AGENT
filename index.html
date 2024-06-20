@@ -275,6 +275,12 @@
                     clearTimeout(longPressTimer);
                     isDragging = false; // Reset dragging flag
                 });
+
+                draggable.addEventListener('touchmove', function(event) {
+                    if (isDragging) {
+                        startDragging(event, draggable);
+                    }
+                });
             });
 
             function startDragging(event, draggable) {
