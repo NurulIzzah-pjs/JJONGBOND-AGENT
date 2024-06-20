@@ -128,6 +128,10 @@
             if (!imagesLoaded) {
                 console.log('Images are not loaded yet.');
                 return;
+
+                   setTimeout(function() {
+        cardSide.style.transform = ''; // Reset any transformations
+    }, 500);
             }
 
             var cardSide = isFlipped ? document.querySelector('.flip-card-back') : document.querySelector('.flip-card-front');
